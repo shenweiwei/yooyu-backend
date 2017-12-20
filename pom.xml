@@ -8,6 +8,7 @@
 	<name>yooyu parent</name>
 
 	<properties>
+		<project.artifactId>yooyu</project.artifactId>
 		<project.version>0.0.1-SNAPSHOT</project.version>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,6 +34,13 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.9.RELEASE</version>
 	</parent>
+	
+	<modules>
+		<module>yooyu-backend-common</module>
+		<module>yooyu-backend-manager</module>
+		<module>yooyu-backend-service</module>
+		<module>yooyu-backend-webapp</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -163,11 +171,8 @@
 			</plugins>
 		</pluginManagement>
 		<finalName>ROOT</finalName>
+		<defaultGoal>compile</defaultGoal>
 	</build>
-	<modules>
-		<module>yooyu-backend-common</module>
-		<module>yooyu-backend-manager</module>
-		<module>yooyu-backend-service</module>
-		<module>yooyu-backend-webapp</module>
-	</modules>
+	
+	
 </project>
