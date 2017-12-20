@@ -166,7 +166,7 @@
 	</build>
 	<modules>
 		<module>yooyu-backend-common</module>
-		<module>yooyu-backend-manage</module>
+		<module>yooyu-backend-manager</module>
 		<module>yooyu-backend-service</module>
 		<module>yooyu-backend-webapp</module>
 	</modules>
