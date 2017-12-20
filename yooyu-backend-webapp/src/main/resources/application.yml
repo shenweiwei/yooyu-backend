@@ -1,0 +1,14 @@
+# Tomcat
+server:
+  port: 9090
+  
+# Data Source
+spring:
+  datasource:
+    url: jdbc:postgresql://yooyu-webapp.clba9qy07yro.us-east-1.rds.amazonaws.com:5432/postgres
+    username: root
+    password: swwswj384900
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  config: classpath:log4j2.xml
