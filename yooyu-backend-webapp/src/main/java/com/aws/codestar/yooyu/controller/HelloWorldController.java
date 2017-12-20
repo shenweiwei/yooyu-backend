@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates.controller;
+package com.aws.codestar.yooyu.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.aws.codestar.projecttemplates.configuration;
+package com.aws.codestar.yooyu.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import com.aws.codestar.projecttemplates.controller.HelloWorldController;
+import com.aws.codestar.yooyu.controller.HelloWorldController;
 
 /**
  * Spring configuration for sample application.
