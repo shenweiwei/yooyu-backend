@@ -6,7 +6,42 @@
 	<parent>
 		<groupId>com.aws.codestar.yooyu</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>yooyu-backend-webapp</artifactId>
+	
+	<packaging>war</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jersey</artifactId>
+			<!-- 移除冲突包 -->
+			<exclusions>
+				<exclusion>
+					<artifactId>asm-all-repackaged </artifactId>
+					<groupId>org.glassfish.hk2.external</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.glassfish.jersey.ext</groupId>
+					<artifactId>jersey-bean-validation</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aws.codestar.yooyu</groupId>
+			<artifactId>yooyu-backend-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aws.codestar.yooyu</groupId>
+			<artifactId>yooyu-backend-manager</artifactId>
+		</dependency>
+	</dependencies>
 </project>
