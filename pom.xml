@@ -26,6 +26,7 @@
 		<!-- other plugin -->
 		<log4j.version>2.10.0</log4j.version>
 		<reflections.version>0.9.11</reflections.version>
+		<aws.sdk.version>2.0.0-preview-7</aws.sdk.version>
 	</properties>
 
 	<!-- Inherit defaults from Spring Boot -->
@@ -34,7 +35,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.9.RELEASE</version>
 	</parent>
-	
+
 	<modules>
 		<module>yooyu-backend-common</module>
 		<module>yooyu-backend-manager</module>
@@ -91,6 +92,13 @@
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>${aws.sdk.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -104,6 +112,10 @@
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+		   <groupId>org.springframework.boot</groupId>
+		   <artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
 
 		<!-- 引入log4j2依赖 -->
@@ -170,9 +182,8 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<finalName>ROOT</finalName>
+
 		<defaultGoal>compile</defaultGoal>
 	</build>
-	
-	
+
 </project>

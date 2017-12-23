@@ -13,8 +13,14 @@ public class PictureManagerImpl implements PictureManager{
 
 	@Override
 	public boolean upload() {
-		boolean result=pictureService.upload();
-		return result;
+		boolean awsUploadResult=pictureService.uploadPicToAwsS3("aaa");
+//		boolean saveResult=pictureService.savePic();
+		
+//		if(awsUploadResult && saveResult){
+//			return true;
+//		}
+		
+		return false;
 	}
 
 }
