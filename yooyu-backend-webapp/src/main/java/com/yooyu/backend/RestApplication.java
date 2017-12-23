@@ -1,4 +1,4 @@
-package com.yooyu.backend.webapp;
+package com.yooyu.backend;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

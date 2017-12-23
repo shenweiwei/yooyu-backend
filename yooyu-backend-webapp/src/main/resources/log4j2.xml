@@ -4,7 +4,7 @@
 	<properties>
 
 		<Property name="app_name">yooyu-backend-web</Property>
-		<Property name="log_path">d:/logs/${app_name}</Property>
+		<Property name="log_path">c:/logs/${app_name}</Property>
 
 	</properties>
 	<appenders>

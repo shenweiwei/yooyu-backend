@@ -12,3 +12,11 @@ spring:
 
 logging:
   config: classpath:log4j2.xml
+
+aws:
+  account:
+    accessKeyId: AKIAIAUESC2O43NSEWJQ
+    secretAccessKey: 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
+  bucket:
+    pic: aws-yooyu-webapp-pic
+    video: aws-yooyu-webapp-video
