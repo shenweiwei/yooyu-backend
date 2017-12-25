@@ -25,7 +25,6 @@ public class PictureController {
 	@GET
 	@Path("/upload")
 	public void upload() throws AppException{
-		System.out.println(123);
-		pictureManager.upload();
+		pictureManager.upload("C:\\log\\agentAll.log");
 	}
 }

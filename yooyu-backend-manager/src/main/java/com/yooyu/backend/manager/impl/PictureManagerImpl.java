@@ -12,8 +12,8 @@ public class PictureManagerImpl implements PictureManager{
 	private PictureService pictureService;
 
 	@Override
-	public boolean upload() {
-		boolean awsUploadResult=pictureService.uploadPicToAwsS3("aaa");
+	public boolean upload(String fileuri) {
+		boolean awsUploadResult=pictureService.uploadPicToAwsS3(fileuri);
 //		boolean saveResult=pictureService.savePic();
 		
 //		if(awsUploadResult && saveResult){

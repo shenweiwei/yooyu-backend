@@ -27,7 +27,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 import software.amazon.awssdk.services.s3.model.UploadPartRequest;
 
 @Component
-@PropertySource("classpath:/application.properties")
+@PropertySource("classpath:/application.yml")
 public class PictureBucket extends BucketAbstract {
 	@Autowired
 	private S3ClientFactory clientFactory;
