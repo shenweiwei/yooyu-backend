@@ -1,12 +1,16 @@
 package com.yooyu.backend.service.impl;
 
-import java.io.File;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yooyu.backend.client.bucket.PictureBucket;
+import com.yooyu.backend.common.exception.AppException;
+import com.yooyu.backend.common.exception.BizException;
+import com.yooyu.backend.common.utils.Base64Util;
+import com.yooyu.backend.db.pojo.Picture;
+import com.yooyu.backend.dto.PictureUploadDTO;
 import com.yooyu.backend.reponsitory.PictureMapper;
 import com.yooyu.backend.service.PictureService;
 
@@ -21,22 +25,37 @@ public class PictureServiceImpl implements PictureService{
 	
 	@Autowired
 	private PictureBucket pictureBucket;
+	
+	@Value("${app.id}")
+	private String app_id;
 
 	@Override
-	public boolean savePic() {
-		System.out.println(234);
-		int count=pictureMapper.upload();
-		System.out.println(count);
+	public boolean savePic(PutObjectResponse response,String key) {
+		//初始化图片对象
+		Picture picture=initPicture(response,key);
+		
+		int count=pictureMapper.upload(picture);
+		
+		if(count < 0) throw new BizException("insert picture error");
 		return true;
 	}
 
-
 	@Override
-	public boolean uploadPicToAwsS3(String fileUri) {
-		RequestBody requestBody=RequestBody.of(new File(fileUri));
-		PutObjectResponse response=pictureBucket.putObject("aaa", requestBody);
-		System.out.println(response);
-		return true;
+	public PutObjectResponse uploadPicToAwsS3(PictureUploadDTO pictureUploadDTO) {
+		byte[] bytes=Base64Util.GenerateBytes(pictureUploadDTO.getData());
+		RequestBody requestBody=RequestBody.of(bytes);
+		PutObjectResponse response=pictureBucket.putObject(pictureUploadDTO.getFileName(), requestBody);
+		if(response == null) throw new AppException("upload picture error");
+		return response;
+	}
+	
+	public Picture initPicture(PutObjectResponse response,String key) {
+		Picture picture = Picture.builder()
+				.setAppId(app_id)
+				.setFileId(key)
+				.seteTag(response.eTag())
+				.setVersionId(response.versionId());
+		return picture;
 	}
 
 }

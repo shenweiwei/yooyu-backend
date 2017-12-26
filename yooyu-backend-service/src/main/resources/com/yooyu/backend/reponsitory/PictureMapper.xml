@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yooyu.backend.reponsitory.PictureMapper">
-	<insert id="upload">
-		INSERT INTO PICTURE VALUES(1,1)
+	<insert id="upload" parameterType="com.yooyu.backend.db.pojo.Picture">
+		INSERT INTO
+		"PICTURE"("ID","FILE_ID","APP_ID","E_TAG","VERSION_ID","VALID","REMARK","USER_ID","CREATE_DATE","CREATE_BY","UPDATE_DATE","UPDATE_BY")
+		VALUES(nextval('PICTURE_ID_SEQ'),#{fileId},#{appId},#{eTag},#{versionId},1,null,null,now(),-1,null,null)
 	</insert>
 </mapper>
