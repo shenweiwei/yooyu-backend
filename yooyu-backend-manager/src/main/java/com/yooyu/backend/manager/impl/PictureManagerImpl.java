@@ -7,9 +7,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.yooyu.backend.dto.PictureSearchDTO;
-import com.yooyu.backend.dto.PictureUploadDTO;
 import com.yooyu.backend.manager.PictureManager;
+import com.yooyu.backend.request.dto.PictureSearchDTO;
+import com.yooyu.backend.request.dto.PictureUploadDTO;
 import com.yooyu.backend.service.PictureService;
 
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
@@ -35,9 +35,9 @@ public class PictureManagerImpl implements PictureManager{
 	
 
 	@Override
-	public List<String> getPicByCondition(PictureSearchDTO pictureSearchDTO){
-		pictureService.getPicByCondition(pictureSearchDTO);
-		return null;	
+	public List<String> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO){
+		List<String> datas=pictureService.getPicDatasByCondition(pictureSearchDTO);
+		return datas;	
 	}
 
 	/**

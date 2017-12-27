@@ -1,32 +1,35 @@
 package com.yooyu.backend.webapp.controllers;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
 import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.utils.BeanUtil;
-import com.yooyu.backend.dto.PictureSearchDTO;
-import com.yooyu.backend.dto.PictureUploadDTO;
 import com.yooyu.backend.manager.PictureManager;
-import com.yooyu.backend.webapp.vo.PictureSearchVO;
-import com.yooyu.backend.webapp.vo.PictureUploadVO;
+import com.yooyu.backend.request.dto.InputPageParamDTO;
+import com.yooyu.backend.request.dto.PictureSearchDTO;
+import com.yooyu.backend.request.dto.PictureUploadDTO;
+import com.yooyu.backend.webapp.request.vo.PictureSearchVO;
+import com.yooyu.backend.webapp.request.vo.PictureUploadVO;
+import com.yooyu.backend.webapp.response.vo.OutputPageParamVO;
+import com.yooyu.backend.webapp.response.vo.PictureSearchResultVO;
 
-
-
-@Controller
+@RestController
 @Path("/picture")
 @Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
 @Consumes("application/json;charset=utf-8")
 public class PictureController {
+	
 	@Autowired
 	private PictureManager pictureManager;
 
@@ -38,11 +41,30 @@ public class PictureController {
 		pictureManager.upload(pictureUploadDTO);
 	}
 	
-	@GET
-	@Path("/take")
-	public void getPic(PictureSearchVO pictureSearchVO) throws AppException{
-		PictureSearchDTO pictureSearchDTO=BeanUtil.map(pictureSearchVO, PictureSearchDTO.class);
+	@POST
+	@Path("/take/datas")
+	public PageInfo<PictureSearchResultVO> getPicUrls(PictureSearchVO pictureSearchVO) throws AppException{
+		InputPageParamDTO inputPageParamDTO = BeanUtil.map(pictureSearchVO.getInputPage(), InputPageParamDTO.class);
+		PictureSearchDTO pictureSearchDTO = PictureSearchDTO.builder().setInputPage(inputPageParamDTO);				
 		
-		List<String> list = pictureManager.getPicByCondition(pictureSearchDTO);
+		List<String> datas = pictureManager.getPicDatasByCondition(pictureSearchDTO);
+		
+		return packagePageInfo(datas);
+	}
+
+	/**
+	 * 包装数据
+	 * 
+	 * @param datas
+	 * @return
+	 */
+	private PageInfo<PictureSearchResultVO> packagePageInfo(List<String> datas){
+		List<PictureSearchResultVO> resultList=new LinkedList<>();
+		
+		datas.forEach(data -> {
+			resultList.add(PictureSearchResultVO.builder().setData(data));
+		});
+		
+		return OutputPageParamVO.builder(resultList);
 	}
 }

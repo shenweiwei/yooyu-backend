@@ -1,4 +1,4 @@
-package com.yooyu.backend.webapp.vo;
+package com.yooyu.backend.webapp.request.vo;
 
 /**
  * 图片上传的对象

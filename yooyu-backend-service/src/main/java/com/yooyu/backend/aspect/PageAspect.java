@@ -26,7 +26,7 @@ public class PageAspect {
      * @return
      * @throws Throwable
      */
-    @Before("execution(* com.sgm.dms..repository.*.*(..)) && args(..,page)")
+    @Before("execution(* com.yooyu.backend..repository.*.*(..)) && args(..,page)")
     public void handlePageHelper(Page<?> page) throws Throwable {
         if (page != null) {
             PageHelper.startPage(page.getPageNum(), page.getPageSize());

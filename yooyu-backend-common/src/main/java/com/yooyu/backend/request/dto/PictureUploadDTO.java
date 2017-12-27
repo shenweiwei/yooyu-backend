@@ -1,4 +1,4 @@
-package com.yooyu.backend.dto;
+package com.yooyu.backend.request.dto;
 
 /**
  * 图片上传DTO

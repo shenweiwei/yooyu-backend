@@ -1,7 +1,7 @@
 package com.yooyu.backend.common.utils;
 
 import com.github.pagehelper.Page;
-import com.yooyu.backend.common.pojo.PageParam;
+import com.yooyu.backend.request.dto.InputPageParamDTO;
 
 /**
  * Page工具类
@@ -20,7 +20,7 @@ public class PageUtil {
      * @param inputPage
      * @return
      */
-    public static Page<?> getPage(PageParam inputPage) {
+    public static Page<?> getPage(InputPageParamDTO inputPage) {
         int pageNum = inputPage.getPageNum() == null ? 1 : inputPage.getPageNum();
         int pageSize = inputPage.getPageSize() == null ? 10 : inputPage.getPageSize();
         Page<?> page = new Page<>(pageNum, pageSize);

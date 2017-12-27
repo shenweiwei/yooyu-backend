@@ -31,7 +31,7 @@ public class BeanUtil {
         }
     }
 
-    public static <T> List<T> mapList(Collection sourceList, Class<T> destinationClass) {
+    public static <T> List<T> mapList(Collection<T> sourceList, Class<T> destinationClass) {
         if(null == sourceList || sourceList.size() == 0){return null;}
 
         List<T> destinationList = new ArrayList<>();

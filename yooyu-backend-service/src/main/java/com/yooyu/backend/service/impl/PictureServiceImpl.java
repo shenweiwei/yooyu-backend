@@ -1,6 +1,6 @@
 package com.yooyu.backend.service.impl;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,11 @@ import com.yooyu.backend.client.bucket.PictureBucket;
 import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.exception.BizException;
 import com.yooyu.backend.common.utils.Base64Util;
+import com.yooyu.backend.common.utils.PageUtil;
 import com.yooyu.backend.db.pojo.Picture;
-import com.yooyu.backend.dto.PictureSearchDTO;
-import com.yooyu.backend.dto.PictureUploadDTO;
 import com.yooyu.backend.reponsitory.PictureMapper;
+import com.yooyu.backend.request.dto.PictureSearchDTO;
+import com.yooyu.backend.request.dto.PictureUploadDTO;
 import com.yooyu.backend.service.PictureService;
 
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -65,15 +66,19 @@ public class PictureServiceImpl implements PictureService{
 	}
 
 	@Override
-	public List<String> getPicByCondition(PictureSearchDTO pictureSearchDTO) {
-		List<Picture> list=pictureMapper.findAll(pictureSearchDTO);
-		List<String> imageList=new LinkedList<>();
+	public List<String> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO) {
+		List<Picture> list=pictureMapper.findAll(pictureSearchDTO,PageUtil.getPage(pictureSearchDTO.getInputPage()));
+		List<String> imageList=new ArrayList<>();
 		
 		list.forEach( picture -> { 
 			ResponseBytes<GetObjectResponse> response=pictureBucket.getObject(picture.getFileId());
 			String image=Base64Util.GenerateBase64(response.asByteArray());
 			imageList.add(image);
 		});
+		
+		if(imageList.isEmpty()){
+			throw new BizException("get pic datas is error");
+		}
 		
 		return imageList;
 	}

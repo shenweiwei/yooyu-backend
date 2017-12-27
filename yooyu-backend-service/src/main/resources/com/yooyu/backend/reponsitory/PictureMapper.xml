@@ -24,18 +24,17 @@
 		VALUES(nextval('PICTURE_ID_SEQ'),#{fileId},#{appId},#{eTag},#{versionId},1,null,null,now(),-1,null,null)
 	</insert>
 	
-	<select id="findAll" resultMap="pictureResultMap" parameterType="com.yooyu.backend.dto.PictureSearchDTO">
+	<select id="findAll" resultMap="pictureResultMap">
 		SELECT *
 		FROM "PICTURE"
 		<where>
-			<if test='appId!=null and !"".equales(appId)'>
-				"APP_ID"=#{appId}
+			<if test='ps.appId!=null and !"".equales(ps.appId)'>
+				"APP_ID"=#{ps.appId}
 			</if>
-			<if test='userId!=null and !"".equales(userId)'>
-				"USER_ID"=#{userId}
+			<if test='ps.userId!=null and !"".equales(ps.userId)'>
+				"USER_ID"=#{ps.userId}
 			</if>
 		</where>
-		ORDER BY "APP_ID","USER_ID"
 	</select>
 	
 	<select id="find" resultMap="pictureResultMap" parameterType="java.lang.String">
