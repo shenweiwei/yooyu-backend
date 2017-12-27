@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.yooyu.backend.client.S3ClientFactory;
 
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.core.sync.ResponseBytes;
 import software.amazon.awssdk.core.sync.StreamingResponseHandler;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
@@ -22,6 +23,7 @@ import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 import software.amazon.awssdk.services.s3.model.UploadPartRequest;
@@ -43,9 +45,9 @@ public class PictureBucket extends BucketAbstract {
 	}
 
 	@Override
-	public Object getObject(String filename, RequestBody requestBody) {
+	public ResponseBytes<GetObjectResponse> getObject(String filename) {
 		GetObjectRequest request = GetObjectRequest.builder().bucket(picBucketName).key(filename).build();
-		Object response = getS3Client().getObject(request, StreamingResponseHandler.toBytes());
+		ResponseBytes<GetObjectResponse> response = getS3Client().getObject(request, StreamingResponseHandler.toBytes());
 		return response;
 	}
 

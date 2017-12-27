@@ -8,7 +8,6 @@ import java.io.OutputStream;
 
 import com.yooyu.backend.common.exception.AppException;
 
-import javassist.expr.NewArray;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -71,5 +70,16 @@ public class Base64Util {
         } catch (Exception e) {  
             throw new AppException("image cast byte error");
         }  
+    }
+    
+    // 字节转化成 base64字符串
+    public static String GenerateBase64(byte[] bytes) { // 对字节数组字符串进行Base64解码并生成图片  
+        if (bytes == null){
+        	// 图像数据为空  
+        	return null;
+        }
+            
+        BASE64Encoder encoder = new BASE64Encoder();  
+        return encoder.encode(bytes);
     }  
 }

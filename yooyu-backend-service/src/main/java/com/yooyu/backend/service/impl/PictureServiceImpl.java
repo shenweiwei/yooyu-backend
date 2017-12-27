@@ -1,5 +1,7 @@
 package com.yooyu.backend.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.exception.BizException;
 import com.yooyu.backend.common.utils.Base64Util;
 import com.yooyu.backend.db.pojo.Picture;
+import com.yooyu.backend.dto.PictureSearchDTO;
 import com.yooyu.backend.dto.PictureUploadDTO;
 import com.yooyu.backend.reponsitory.PictureMapper;
 import com.yooyu.backend.service.PictureService;
@@ -56,6 +59,17 @@ public class PictureServiceImpl implements PictureService{
 				.seteTag(response.eTag())
 				.setVersionId(response.versionId());
 		return picture;
+	}
+
+	@Override
+	public List<String> getPicByCondition(PictureSearchDTO pictureSearchDTO) {
+		List<Picture> list=pictureMapper.findAll(pictureSearchDTO);
+		
+		list.forEach( picture ->{ 
+			pictureBucket.getObject(picture.getFileId());
+		});
+		
+		return null;
 	}
 
 }

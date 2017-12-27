@@ -9,7 +9,7 @@ public interface BucketOperation {
 
 	public PutObjectResponse putObject(String filename,RequestBody requestBody);
 	
-	public Object getObject(String filename,RequestBody requestBody);
+	public Object getObject(String filename);
 	
 	public CompleteMultipartUploadResponse multipartPutObject(String filename,RequestBody requestBody);
 	

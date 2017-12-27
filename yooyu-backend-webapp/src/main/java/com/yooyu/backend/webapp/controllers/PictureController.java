@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 
 import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.utils.BeanUtil;
+import com.yooyu.backend.dto.PictureSearchDTO;
 import com.yooyu.backend.dto.PictureUploadDTO;
 import com.yooyu.backend.manager.PictureManager;
+import com.yooyu.backend.webapp.vo.PictureSearchVO;
 import com.yooyu.backend.webapp.vo.PictureUploadVO;
 
 
@@ -35,10 +37,10 @@ public class PictureController {
 	}
 	
 	@GET
-	@Path("/get")
-	public void getPic(PictureUploadVO pictureUploadVO) throws AppException{
-		PictureUploadDTO pictureUploadDTO=BeanUtil.map(pictureUploadVO, PictureUploadDTO.class);
+	@Path("/take")
+	public void getPic(PictureSearchVO pictureSearchVO) throws AppException{
+		PictureSearchDTO pictureSearchDTO=BeanUtil.map(pictureSearchVO, PictureSearchDTO.class);
 		
-		pictureManager.upload(pictureUploadDTO);
+		pictureManager.getPicByCondition(pictureSearchDTO);
 	}
 }

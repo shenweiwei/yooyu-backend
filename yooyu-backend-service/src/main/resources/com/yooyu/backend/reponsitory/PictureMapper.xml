@@ -2,9 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yooyu.backend.reponsitory.PictureMapper">
+
+	<resultMap id="pictureResultMap" type="com.yooyu.backend.db.pojo.Picture">
+		<id property="id" column="ID" />
+		<result property="fileId" column="FILE_ID"/>
+		<result property="appId" column="APP_ID"/>
+		<result property="eTag" column="E_TAG"/>
+		<result property="versionId" column="VERSION_ID"/>
+		<result property="valid" column="VALID"/>
+		<result property="remark" column="REMARK"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="createBy" column="CREATE_BY"/>
+		<result property="updateDate" column="UPDATE_DATE"/>
+		<result property="updateBy" column="UPDATE_BY"/>
+	</resultMap>
+	
 	<insert id="upload" parameterType="com.yooyu.backend.db.pojo.Picture">
 		INSERT INTO
 		"PICTURE"("ID","FILE_ID","APP_ID","E_TAG","VERSION_ID","VALID","REMARK","USER_ID","CREATE_DATE","CREATE_BY","UPDATE_DATE","UPDATE_BY")
 		VALUES(nextval('PICTURE_ID_SEQ'),#{fileId},#{appId},#{eTag},#{versionId},1,null,null,now(),-1,null,null)
 	</insert>
+	
+	<select id="findAll" resultMap="pictureResultMap" parameterType="com.yooyu.backend.dto.PictureSearchDTO">
+		SELECT *
+		FROM "PICTURE"
+		<where>
+			<if test='appId!=null and !"".equales(appId)'>
+				"APP_ID"=#{appId}
+			</if>
+			<if test='userId!=null and !"".equales(userId)'>
+				"USER_ID"=#{userId}
+			</if>
+		</where>
+		ORDER BY "APP_ID","USER_ID"
+	</select>
+	
+	<select id="find" resultMap="pictureResultMap" parameterType="java.lang.String">
+		SELECT *
+		FROM "PICTURE"
+		WHERE "FILE_ID"=#{fileId}
+	</select>
 </mapper>
