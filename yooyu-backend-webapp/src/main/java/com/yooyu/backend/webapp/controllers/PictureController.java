@@ -1,5 +1,7 @@
 package com.yooyu.backend.webapp.controllers;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,6 +43,6 @@ public class PictureController {
 	public void getPic(PictureSearchVO pictureSearchVO) throws AppException{
 		PictureSearchDTO pictureSearchDTO=BeanUtil.map(pictureSearchVO, PictureSearchDTO.class);
 		
-		pictureManager.getPicByCondition(pictureSearchDTO);
+		List<String> list = pictureManager.getPicByCondition(pictureSearchDTO);
 	}
 }

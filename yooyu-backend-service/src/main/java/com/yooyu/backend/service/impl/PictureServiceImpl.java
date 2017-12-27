@@ -1,5 +1,6 @@
 package com.yooyu.backend.service.impl;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import com.yooyu.backend.reponsitory.PictureMapper;
 import com.yooyu.backend.service.PictureService;
 
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.core.sync.ResponseBytes;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 @Service
@@ -64,12 +67,15 @@ public class PictureServiceImpl implements PictureService{
 	@Override
 	public List<String> getPicByCondition(PictureSearchDTO pictureSearchDTO) {
 		List<Picture> list=pictureMapper.findAll(pictureSearchDTO);
+		List<String> imageList=new LinkedList<>();
 		
-		list.forEach( picture ->{ 
-			pictureBucket.getObject(picture.getFileId());
+		list.forEach( picture -> { 
+			ResponseBytes<GetObjectResponse> response=pictureBucket.getObject(picture.getFileId());
+			String image=Base64Util.GenerateBase64(response.asByteArray());
+			imageList.add(image);
 		});
 		
-		return null;
+		return imageList;
 	}
 
 }
