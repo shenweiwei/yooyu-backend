@@ -28,10 +28,10 @@
 		SELECT *
 		FROM "PICTURE"
 		<where>
-			<if test='ps.appId!=null and !"".equales(ps.appId)'>
+			<if test='ps.appId!=null and !"".equals(ps.appId)'>
 				"APP_ID"=#{ps.appId}
 			</if>
-			<if test='ps.userId!=null and !"".equales(ps.userId)'>
+			<if test='ps.userId!=null and !"".equals(ps.userId)'>
 				"USER_ID"=#{ps.userId}
 			</if>
 		</where>

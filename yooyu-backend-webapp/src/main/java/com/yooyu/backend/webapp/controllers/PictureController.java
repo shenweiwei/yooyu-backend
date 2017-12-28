@@ -17,6 +17,7 @@ import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.utils.BeanUtil;
 import com.yooyu.backend.manager.PictureManager;
 import com.yooyu.backend.request.dto.InputPageParamDTO;
+import com.yooyu.backend.request.dto.PictureSearchConditionDTO;
 import com.yooyu.backend.request.dto.PictureSearchDTO;
 import com.yooyu.backend.request.dto.PictureUploadDTO;
 import com.yooyu.backend.webapp.request.vo.PictureSearchVO;
@@ -44,16 +45,28 @@ public class PictureController {
 	@POST
 	@Path("/take/datas")
 	public PageInfo<PictureSearchResultVO> getPicUrls(PictureSearchVO pictureSearchVO) throws AppException{
-		InputPageParamDTO inputPageParamDTO = BeanUtil.map(pictureSearchVO.getInputPage(), InputPageParamDTO.class);
-		PictureSearchDTO pictureSearchDTO = PictureSearchDTO.builder().setInputPage(inputPageParamDTO);				
+		PictureSearchDTO pictureSearchDTO = packagePictureSearchDTO(pictureSearchVO);
 		
 		List<String> datas = pictureManager.getPicDatasByCondition(pictureSearchDTO);
 		
 		return packagePageInfo(datas);
 	}
+	
+	/**
+	 * 包装pictureSearchDTO对象
+	 * 
+	 * @param pictureSearchVO
+	 * @return
+	 */
+	private PictureSearchDTO packagePictureSearchDTO(PictureSearchVO pictureSearchVO){
+		InputPageParamDTO inputPageParamDTO = BeanUtil.map(pictureSearchVO.getInputPage(), InputPageParamDTO.class);
+		PictureSearchConditionDTO pictureSearchConditionDTO = BeanUtil.map(pictureSearchVO.getPicture(), PictureSearchConditionDTO.class);
+		PictureSearchDTO pictureSearchDTO = PictureSearchDTO.builder().setInputPage(inputPageParamDTO).setPicture(pictureSearchConditionDTO);				
+		return pictureSearchDTO;
+	}
 
 	/**
-	 * 包装数据
+	 * 包装PageInfo数据
 	 * 
 	 * @param datas
 	 * @return

@@ -83,11 +83,33 @@
 			<DefaultRolloverStrategy compressionLevel="0"
 				max="10" />
 		</RollingFile>
+		
+		<RollingFile name="RollingFileTrace" fileName="${log_path}/debug.log"
+			filePattern="${log_path}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log.gz">
+			<ThresholdFilter level="Trace" />
+			<PatternLayout pattern="[%d][%t][%p][%c:%L] %m%n" />
+			<Policies>
+				<!-- 归档每天的文件 -->
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+				<!-- 限制单个文件大小 -->
+				<SizeBasedTriggeringPolicy size="2 MB" />
+			</Policies>
+			<!-- 限制每天文件个数 -->
+			<DefaultRolloverStrategy compressionLevel="0"
+				max="10" />
+		</RollingFile>
 
 		<!-- 配置mongdb appender -->
 	</appenders>
 
 	<loggers>
+		<!-- 数据库日志 -->
+		<logger name="com.yooyu.backend.reponsitory" level="trace" additivity="false">  
+            <appender-ref ref="Console"/>  
+            <appender-ref ref="RollingFileDebug"/>
+            <appender-ref ref="RollingFileTrace"/>  
+        </logger>  
 		<!--过滤掉spring和hibernate的一些无用的debug信息 -->
 
 		<root level="info">
@@ -96,6 +118,7 @@
 			<appender-ref ref="RollingFileWarn" />
 			<appender-ref ref="RollingFileError" />
 			<appender-ref ref="RollingFileDebug" />
+			<appender-ref ref="RollingFileTrace" />
 			<!-- 输出日志到mongodb -->
 		</root>
 

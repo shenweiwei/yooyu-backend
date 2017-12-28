@@ -2,7 +2,6 @@ package com.yooyu.backend.service;
 
 import java.util.List;
 
-import com.github.pagehelper.Page;
 import com.yooyu.backend.request.dto.PictureSearchDTO;
 import com.yooyu.backend.request.dto.PictureUploadDTO;
 

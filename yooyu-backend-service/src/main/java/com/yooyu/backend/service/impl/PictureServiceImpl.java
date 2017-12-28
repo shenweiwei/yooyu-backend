@@ -67,7 +67,7 @@ public class PictureServiceImpl implements PictureService{
 
 	@Override
 	public List<String> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO) {
-		List<Picture> list=pictureMapper.findAll(pictureSearchDTO,PageUtil.getPage(pictureSearchDTO.getInputPage()));
+		List<Picture> list=pictureMapper.findAll(pictureSearchDTO.getPicture(),PageUtil.getPage(pictureSearchDTO.getInputPage()));
 		List<String> imageList=new ArrayList<>();
 		
 		list.forEach( picture -> { 
