@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -20,6 +22,7 @@ import com.yooyu.backend.request.dto.InputPageParamDTO;
 import com.yooyu.backend.request.dto.PictureSearchConditionDTO;
 import com.yooyu.backend.request.dto.PictureSearchDTO;
 import com.yooyu.backend.request.dto.PictureUploadDTO;
+import com.yooyu.backend.response.dto.PictureSearchResultDTO;
 import com.yooyu.backend.webapp.request.vo.PictureSearchVO;
 import com.yooyu.backend.webapp.request.vo.PictureUploadVO;
 import com.yooyu.backend.webapp.response.vo.OutputPageParamVO;
@@ -43,13 +46,27 @@ public class PictureController {
 	}
 	
 	@POST
+	@Path("/multiple_upload")
+	public void uploadMultiplePic(PictureUploadVO pictureUploadVO) throws AppException{
+		PictureUploadDTO pictureUploadDTO=BeanUtil.map(pictureUploadVO, PictureUploadDTO.class);
+		
+		pictureManager.upload(pictureUploadDTO);
+	}
+	
+	@POST
 	@Path("/take/datas")
-	public PageInfo<PictureSearchResultVO> getPicUrls(PictureSearchVO pictureSearchVO) throws AppException{
+	public PageInfo<PictureSearchResultVO> getPicList(PictureSearchVO pictureSearchVO) throws AppException{
 		PictureSearchDTO pictureSearchDTO = packagePictureSearchDTO(pictureSearchVO);
 		
-		List<String> datas = pictureManager.getPicDatasByCondition(pictureSearchDTO);
+		List<PictureSearchResultDTO> datas = pictureManager.getPicDatasByCondition(pictureSearchDTO);
 		
 		return packagePageInfo(datas);
+	}
+	
+	@DELETE
+	@Path("/delete/{fileId}")
+	public void deletePic(@PathParam("fileId") String fileId) throws AppException{
+		
 	}
 	
 	/**
@@ -71,11 +88,12 @@ public class PictureController {
 	 * @param datas
 	 * @return
 	 */
-	private PageInfo<PictureSearchResultVO> packagePageInfo(List<String> datas){
+	private PageInfo<PictureSearchResultVO> packagePageInfo(List<PictureSearchResultDTO> datas){
 		List<PictureSearchResultVO> resultList=new LinkedList<>();
 		
-		datas.forEach(data -> {
-			resultList.add(PictureSearchResultVO.builder().setData(data));
+		datas.forEach( pictureSearchResultDTO -> {
+			PictureSearchResultVO pictureSearchResultVO = BeanUtil.map(pictureSearchResultDTO, PictureSearchResultVO.class);
+			resultList.add(pictureSearchResultVO);
 		});
 		
 		return OutputPageParamVO.builder(resultList);

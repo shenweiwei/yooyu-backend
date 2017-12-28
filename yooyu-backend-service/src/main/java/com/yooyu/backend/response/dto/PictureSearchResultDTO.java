@@ -1,8 +1,8 @@
-package com.yooyu.backend.webapp.response.vo;
+package com.yooyu.backend.response.dto;
 
 import java.util.Date;
 
-public class PictureSearchResultVO {
+public class PictureSearchResultDTO {
 	private Long id;
 	private String fileId;
 	private String appId;
@@ -20,96 +20,96 @@ public class PictureSearchResultVO {
 	public Long getId() {
 		return id;
 	}
-	public PictureSearchResultVO setId(Long id) {
+	public PictureSearchResultDTO setId(Long id) {
 		this.id = id;
 		return this;
 	}
 	public String getFileId() {
 		return fileId;
 	}
-	public PictureSearchResultVO setFileId(String fileId) {
+	public PictureSearchResultDTO setFileId(String fileId) {
 		this.fileId = fileId;
 		return this;
 	}
 	public String getAppId() {
 		return appId;
 	}
-	public PictureSearchResultVO setAppId(String appId) {
+	public PictureSearchResultDTO setAppId(String appId) {
 		this.appId = appId;
 		return this;
 	}
 	public String geteTag() {
 		return eTag;
 	}
-	public PictureSearchResultVO seteTag(String eTag) {
+	public PictureSearchResultDTO seteTag(String eTag) {
 		this.eTag = eTag;
 		return this;
 	}
 	public String getVersionId() {
 		return versionId;
 	}
-	public PictureSearchResultVO setVersionId(String versionId) {
+	public PictureSearchResultDTO setVersionId(String versionId) {
 		this.versionId = versionId;
 		return this;
 	}
 	public Short getValid() {
 		return valid;
 	}
-	public PictureSearchResultVO setValid(Short valid) {
+	public PictureSearchResultDTO setValid(Short valid) {
 		this.valid = valid;
 		return this;
 	}
 	public String getRemark() {
 		return remark;
 	}
-	public PictureSearchResultVO setRemark(String remark) {
+	public PictureSearchResultDTO setRemark(String remark) {
 		this.remark = remark;
 		return this;
 	}
 	public Long getUserId() {
 		return userId;
 	}
-	public PictureSearchResultVO setUserId(Long userId) {
+	public PictureSearchResultDTO setUserId(Long userId) {
 		this.userId = userId;
 		return this;
 	}
 	public Date getCreateDate() {
 		return createDate;
 	}
-	public PictureSearchResultVO setCreateDate(Date createDate) {
+	public PictureSearchResultDTO setCreateDate(Date createDate) {
 		this.createDate = createDate;
 		return this;
 	}
 	public Long getCreateBy() {
 		return createBy;
 	}
-	public PictureSearchResultVO setCreateBy(Long createBy) {
+	public PictureSearchResultDTO setCreateBy(Long createBy) {
 		this.createBy = createBy;
 		return this;
 	}
 	public Date getUpdateDate() {
 		return updateDate;
 	}
-	public PictureSearchResultVO setUpdateDate(Date updateDate) {
+	public PictureSearchResultDTO setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 		return this;
 	}
 	public Long getUpdateBy() {
 		return updateBy;
 	}
-	public PictureSearchResultVO setUpdateBy(Long updateBy) {
+	public PictureSearchResultDTO setUpdateBy(Long updateBy) {
 		this.updateBy = updateBy;
 		return this;
 	}
 	public String getData() {
 		return data;
 	}
-	public PictureSearchResultVO setData(String data) {
+	public PictureSearchResultDTO setData(String data) {
 		this.data = data;
 		return this;
 	}	
-	public static PictureSearchResultVO builder(){
-		return new PictureSearchResultVO();
+	public static PictureSearchResultDTO builder(){
+		return new PictureSearchResultDTO();
 	}
 	
 }

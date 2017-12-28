@@ -12,11 +12,13 @@ import com.yooyu.backend.client.bucket.PictureBucket;
 import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.exception.BizException;
 import com.yooyu.backend.common.utils.Base64Util;
+import com.yooyu.backend.common.utils.BeanUtil;
 import com.yooyu.backend.common.utils.PageUtil;
 import com.yooyu.backend.db.pojo.Picture;
 import com.yooyu.backend.reponsitory.PictureMapper;
 import com.yooyu.backend.request.dto.PictureSearchDTO;
 import com.yooyu.backend.request.dto.PictureUploadDTO;
+import com.yooyu.backend.response.dto.PictureSearchResultDTO;
 import com.yooyu.backend.service.PictureService;
 
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -66,14 +68,15 @@ public class PictureServiceImpl implements PictureService{
 	}
 
 	@Override
-	public List<String> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO) {
+	public List<PictureSearchResultDTO> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO) {
 		List<Picture> list=pictureMapper.findAll(pictureSearchDTO.getPicture(),PageUtil.getPage(pictureSearchDTO.getInputPage()));
-		List<String> imageList=new ArrayList<>();
+		List<PictureSearchResultDTO> imageList=new ArrayList<>();
 		
 		list.forEach( picture -> { 
 			ResponseBytes<GetObjectResponse> response=pictureBucket.getObject(picture.getFileId());
 			String image=Base64Util.GenerateBase64(response.asByteArray());
-			imageList.add(image);
+			PictureSearchResultDTO pictureSearchResultDTO=BeanUtil.map(picture, PictureSearchResultDTO.class).setData(image);
+			imageList.add(pictureSearchResultDTO);
 		});
 		
 		if(imageList.isEmpty()){

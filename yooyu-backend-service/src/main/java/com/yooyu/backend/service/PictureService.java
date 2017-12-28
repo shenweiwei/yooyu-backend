@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yooyu.backend.request.dto.PictureSearchDTO;
 import com.yooyu.backend.request.dto.PictureUploadDTO;
+import com.yooyu.backend.response.dto.PictureSearchResultDTO;
 
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
@@ -13,5 +14,5 @@ public interface PictureService {
 	
 	public PutObjectResponse uploadPicToAwsS3(PictureUploadDTO pictureUploadDTO);
 	
-	public List<String> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO);
+	public List<PictureSearchResultDTO> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO);
 }
