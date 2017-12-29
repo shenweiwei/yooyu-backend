@@ -21,8 +21,12 @@
 	<insert id="upload" parameterType="com.yooyu.backend.db.pojo.Picture">
 		INSERT INTO
 		"PICTURE"("ID","FILE_ID","APP_ID","E_TAG","VERSION_ID","VALID","REMARK","USER_ID","CREATE_DATE","CREATE_BY","UPDATE_DATE","UPDATE_BY")
-		VALUES(nextval('PICTURE_ID_SEQ'),#{fileId},#{appId},#{eTag},#{versionId},1,null,null,now(),-1,null,null)
+		VALUES(NEXTVAL('"PICTURE_ID_SEQ"'),#{fileId},#{appId},#{eTag},#{versionId},1,null,null,now(),-1,null,null)
 	</insert>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		DELETE FROM "PICTURE" WHERE "FILE_ID"=#{fileId}
+	</delete>
 	
 	<select id="findAll" resultMap="pictureResultMap">
 		SELECT *

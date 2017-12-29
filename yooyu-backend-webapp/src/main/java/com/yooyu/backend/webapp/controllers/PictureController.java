@@ -47,10 +47,10 @@ public class PictureController {
 	
 	@POST
 	@Path("/multiple_upload")
-	public void uploadMultiplePic(PictureUploadVO pictureUploadVO) throws AppException{
-		PictureUploadDTO pictureUploadDTO=BeanUtil.map(pictureUploadVO, PictureUploadDTO.class);
+	public void uploadMultiplePic(List<PictureUploadVO> pictureUploadVOList) throws AppException{
+		List<PictureUploadDTO> pictureUploadDTOList=BeanUtil.mapList(pictureUploadVOList, PictureUploadDTO.class);
 		
-		pictureManager.upload(pictureUploadDTO);
+		pictureManager.multipleUpload(pictureUploadDTOList);
 	}
 	
 	@POST
@@ -58,7 +58,7 @@ public class PictureController {
 	public PageInfo<PictureSearchResultVO> getPicList(PictureSearchVO pictureSearchVO) throws AppException{
 		PictureSearchDTO pictureSearchDTO = packagePictureSearchDTO(pictureSearchVO);
 		
-		List<PictureSearchResultDTO> datas = pictureManager.getPicDatasByCondition(pictureSearchDTO);
+		List<PictureSearchResultDTO> datas = pictureManager.getPicListByCondition(pictureSearchDTO);
 		
 		return packagePageInfo(datas);
 	}
@@ -66,7 +66,7 @@ public class PictureController {
 	@DELETE
 	@Path("/delete/{fileId}")
 	public void deletePic(@PathParam("fileId") String fileId) throws AppException{
-		
+		pictureManager.deletePicByFileId(fileId);
 	}
 	
 	/**

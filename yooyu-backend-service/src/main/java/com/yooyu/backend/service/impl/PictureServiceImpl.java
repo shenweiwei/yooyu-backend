@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yooyu.backend.client.bucket.PictureBucket;
 import com.yooyu.backend.common.exception.AppException;
@@ -23,11 +22,11 @@ import com.yooyu.backend.service.PictureService;
 
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.sync.ResponseBytes;
+import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 @Service
-@Transactional(rollbackFor=Exception.class)
 public class PictureServiceImpl implements PictureService{
 	@Autowired
 	private PictureMapper pictureMapper;
@@ -45,7 +44,7 @@ public class PictureServiceImpl implements PictureService{
 		
 		int count=pictureMapper.upload(picture);
 		
-		if(count < 0) throw new BizException("insert picture error");
+		if(count <= 0) throw new BizException("insert picture error");
 		return true;
 	}
 
@@ -53,7 +52,7 @@ public class PictureServiceImpl implements PictureService{
 	public PutObjectResponse uploadPicToAwsS3(PictureUploadDTO pictureUploadDTO) {
 		byte[] bytes=Base64Util.GenerateBytes(pictureUploadDTO.getData());
 		RequestBody requestBody=RequestBody.of(bytes);
-		PutObjectResponse response=pictureBucket.putObject(pictureUploadDTO.getFileName(), requestBody);
+		PutObjectResponse response=pictureBucket.putObject(pictureUploadDTO.getFileId(), requestBody);
 		if(response == null) throw new AppException("upload picture error");
 		return response;
 	}
@@ -68,7 +67,7 @@ public class PictureServiceImpl implements PictureService{
 	}
 
 	@Override
-	public List<PictureSearchResultDTO> getPicDatasByCondition(PictureSearchDTO pictureSearchDTO) {
+	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO) {
 		List<Picture> list=pictureMapper.findAll(pictureSearchDTO.getPicture(),PageUtil.getPage(pictureSearchDTO.getInputPage()));
 		List<PictureSearchResultDTO> imageList=new ArrayList<>();
 		
@@ -84,6 +83,29 @@ public class PictureServiceImpl implements PictureService{
 		}
 		
 		return imageList;
+	}
+
+	@Override
+	public boolean deletePicByFileId(String key) {
+		int count=pictureMapper.delete(key);
+		
+		if(count <= 0) throw new BizException("insert picture error");
+		
+		return true;
+	}
+
+	@Override
+	public DeleteObjectResponse deletePicToAwsS3(String key) {
+		DeleteObjectResponse response = pictureBucket.deleteObject(key);
+		if(response == null) throw new AppException("delete picture error");
+		return response;
+	}
+
+	@Override
+	public ResponseBytes<GetObjectResponse> getPicByFileId(String key) {
+		ResponseBytes<GetObjectResponse> response=pictureBucket.getObject(key);
+		if(response == null) throw new AppException("get picture error");
+		return response;
 	}
 
 }

@@ -9,6 +9,7 @@ package com.yooyu.backend.request.dto;
 public class PictureUploadDTO {
 	private String data;
 	private String fileName;
+	private String fileId;
 	private String fileType;
 	
 	public String getData() {
@@ -29,6 +30,10 @@ public class PictureUploadDTO {
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
 	}
-	
-	
+	public String getFileId() {
+		return fileId;
+	}
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
 }

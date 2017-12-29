@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yooyu.backend.reponsitory.PictureHistoryMapper">
+
+	<resultMap id="pictureResultMap" type="com.yooyu.backend.db.pojo.Picture">
+		<id property="id" column="ID" />
+		<result property="fileId" column="FILE_ID"/>
+		<result property="appId" column="APP_ID"/>
+		<result property="data" column="DATA"/>
+		<result property="pictureId" column="PICTURE_ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="remark" column="REMARK"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="createBy" column="CREATE_BY"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="com.yooyu.backend.db.pojo.PictureHistory">
+		INSERT INTO
+		"PICTURE_HISTORY"("ID","FILE_ID","APP_ID","DATA","USER_ID","PICTURE_ID","REMARK","CREATE_DATE","CREATE_BY")
+		VALUES(NEXTVAL('"PICTURE_HISTORY_ID_SEQ"'),#{fileId},#{appId},#{data},#{userId},#{pictureId},null,now(),-1)
+	</insert>
+	
+<!-- 	<update id="delete" parameterType="java.lang.String"> -->
+<!-- 		UPDATE "PICTURE" SET "VALID"=0 WHERE "FILE_ID"=#{fileId} -->
+<!-- 	</update> -->
+	
+<!-- 	<select id="findAll" resultMap="pictureResultMap"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM "PICTURE" -->
+<!-- 		<where> -->
+<!-- 			<if test='ps.appId!=null and !"".equals(ps.appId)'> -->
+<!-- 				"APP_ID"=#{ps.appId} -->
+<!-- 			</if> -->
+<!-- 			<if test='ps.userId!=null and !"".equals(ps.userId)'> -->
+<!-- 				"USER_ID"=#{ps.userId} -->
+<!-- 			</if> -->
+<!-- 		</where> -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="find" resultMap="pictureResultMap" parameterType="java.lang.String"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM "PICTURE" -->
+<!-- 		WHERE "FILE_ID"=#{fileId} -->
+<!-- 	</select> -->
+</mapper>

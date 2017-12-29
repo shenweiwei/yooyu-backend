@@ -38,37 +38,37 @@ public class PictureBucket extends BucketAbstract {
 	private String picBucketName;
 
 	@Override
-	public PutObjectResponse putObject(String filename, RequestBody requestBody) {
-		PutObjectRequest request = PutObjectRequest.builder().bucket(picBucketName).key(filename).build();
+	public PutObjectResponse putObject(String key, RequestBody requestBody) {
+		PutObjectRequest request = PutObjectRequest.builder().bucket(picBucketName).key(key).build();
 		PutObjectResponse response = getS3Client().putObject(request, requestBody);
 		return response;
 	}
 
 	@Override
-	public ResponseBytes<GetObjectResponse> getObject(String filename) {
-		GetObjectRequest request = GetObjectRequest.builder().bucket(picBucketName).key(filename).build();
+	public ResponseBytes<GetObjectResponse> getObject(String key) {
+		GetObjectRequest request = GetObjectRequest.builder().bucket(picBucketName).key(key).build();
 		ResponseBytes<GetObjectResponse> response = getS3Client().getObject(request, StreamingResponseHandler.toBytes());
 		return response;
 	}
 
 	@Override
-	public CompleteMultipartUploadResponse multipartPutObject(String filename, RequestBody requestBody) {
+	public CompleteMultipartUploadResponse multipartPutObject(String key, RequestBody requestBody) {
 		int MB = 1024 * 1024;
 		// First create a multipart upload and get upload id
 		CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
-				.bucket(picBucketName).key(filename).build();
+				.bucket(picBucketName).key(key).build();
 		CreateMultipartUploadResponse response = this.getS3Client().createMultipartUpload(createMultipartUploadRequest);
 		String uploadId = response.uploadId();
 		System.out.println(uploadId);
 
 		// Upload all the different parts of the object
-		UploadPartRequest uploadPartRequest1 = UploadPartRequest.builder().bucket(picBucketName).key(filename)
+		UploadPartRequest uploadPartRequest1 = UploadPartRequest.builder().bucket(picBucketName).key(key)
 				.uploadId(uploadId).partNumber(1).build();
 		String etag1 = this.getS3Client().uploadPart(uploadPartRequest1, RequestBody.of(getRandomByteBuffer(5 * MB)))
 				.eTag();
 		CompletedPart part1 = CompletedPart.builder().partNumber(1).eTag(etag1).build();
 
-		UploadPartRequest uploadPartRequest2 = UploadPartRequest.builder().bucket(picBucketName).key(filename)
+		UploadPartRequest uploadPartRequest2 = UploadPartRequest.builder().bucket(picBucketName).key(key)
 				.uploadId(uploadId).partNumber(2).build();
 		String etag2 = this.getS3Client().uploadPart(uploadPartRequest2, RequestBody.of(getRandomByteBuffer(3 * MB)))
 				.eTag();
@@ -80,7 +80,7 @@ public class PictureBucket extends BucketAbstract {
 		CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder().parts(part1, part2)
 				.build();
 		CompleteMultipartUploadRequest completeMultipartUploadRequest = CompleteMultipartUploadRequest.builder()
-				.bucket(picBucketName).key(filename).uploadId(uploadId).multipartUpload(completedMultipartUpload)
+				.bucket(picBucketName).key(key).uploadId(uploadId).multipartUpload(completedMultipartUpload)
 				.build();
 		CompleteMultipartUploadResponse finalresponse = this.getS3Client()
 				.completeMultipartUpload(completeMultipartUploadRequest);
@@ -89,8 +89,8 @@ public class PictureBucket extends BucketAbstract {
 	}
 
 	@Override
-	public DeleteObjectResponse deleteObject(String filename) {
-		DeleteObjectRequest request = DeleteObjectRequest.builder().bucket(picBucketName).key(filename).build();
+	public DeleteObjectResponse deleteObject(String key) {
+		DeleteObjectRequest request = DeleteObjectRequest.builder().bucket(picBucketName).key(key).build();
 		DeleteObjectResponse response = getS3Client().deleteObject(request);
 		return response;
 	}
