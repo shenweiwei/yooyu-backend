@@ -18,8 +18,7 @@ phases:
     commands:
       - echo Entering post_build phase...
       - echo Build completed on `date`
-      - mvn -f pom.xml package
-      - 
+      - ls
 artifacts:
   type: zip
   files:
