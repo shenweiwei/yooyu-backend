@@ -18,13 +18,9 @@ phases:
     commands:
       - echo Entering post_build phase...
       - echo Build completed on `date`
-      - cd yooyu-backend-webapp/target
-      - ls
-      - mv yooyu .
+      - mvn -f pom.xml package
+      - 
 artifacts:
   type: zip
   files:
-    - 'yooyu/WEB-INF/classes'
-    - 'yooyu/WEB-INF/lib'
-    - 'yooyu/WEB-INF/views'
-    - 'yooyu/resources'
+    - 'yooyu-backend/yooyu-backend-webapp/target/yooyu-backend-webapp-0.0.1-SNAPSHOT'
