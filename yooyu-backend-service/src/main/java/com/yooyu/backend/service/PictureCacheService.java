@@ -5,9 +5,6 @@ import java.util.List;
 import com.yooyu.backend.request.dto.PictureSearchDTO;
 import com.yooyu.backend.response.dto.PictureSearchResultDTO;
 
-import software.amazon.awssdk.core.sync.ResponseBytes;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-
 public interface PictureCacheService {
 	/**
 	 * 根据条件获取到图片列表
