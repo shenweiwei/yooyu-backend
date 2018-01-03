@@ -22,7 +22,7 @@ phases:
 artifacts:
   type: zip
   files:
-    - 'yooyu-backend/WEB-INF/classes'
-    - 'yooyu-backend/WEB-INF/lib'
-    - 'yooyu-backend/WEB-INF/views'
-    - 'yooyu-backend/resources'
+    - 'yooyu/WEB-INF/classes'
+    - 'yooyu/WEB-INF/lib'
+    - 'yooyu/WEB-INF/views'
+    - 'yooyu/resources'
