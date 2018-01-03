@@ -19,9 +19,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport{
@@ -67,7 +64,7 @@ public class RedisConfig extends CachingConfigurerSupport{
     }
 
     @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
+    public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
         RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
         //设置缓存过期时间
         //rcm.setDefaultExpiration(60);//秒
@@ -77,7 +74,7 @@ public class RedisConfig extends CachingConfigurerSupport{
 	@Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         StringRedisTemplate template = new StringRedisTemplate(factory);
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
