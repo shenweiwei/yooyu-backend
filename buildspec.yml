@@ -20,9 +20,5 @@ phases:
       - echo Build completed on `date`
       - ls
 artifacts:
-  type: zip
   files:
-    - 'yooyu/WEB-INF/classes'
-    - 'yooyu/WEB-INF/lib'
-    - 'yooyu/WEB-INF/views'
-    - 'yooyu/resources'
+    - yooyu-backend-webapp/target/yooyu.war
