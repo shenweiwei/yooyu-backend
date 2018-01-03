@@ -18,8 +18,9 @@ phases:
     commands:
       - echo Entering post_build phase...
       - echo Build completed on `date`
+      - cd target
       - ls
-      - mv target/yooyu-backend-webapp .
+      - mv yooyu-backend-webapp .
 artifacts:
   type: zip
   files:
