@@ -8,7 +8,7 @@
 	<name>yooyu parent</name>
 
 	<properties>
-		<project.artifactId>yooyu</project.artifactId>
+		<project.name>yooyu</project.name>
 		<project.version>0.0.1-SNAPSHOT</project.version>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -183,7 +183,7 @@
 					<artifactId>maven-war-plugin</artifactId>
 					<version>2.6</version>
 					<configuration>
-						<warName>${project.artifactId}</warName>
+						<warName>${project.name}</warName>
 						<failOnMissingWebXml>false</failOnMissingWebXml>
 					</configuration>
 				</plugin>
