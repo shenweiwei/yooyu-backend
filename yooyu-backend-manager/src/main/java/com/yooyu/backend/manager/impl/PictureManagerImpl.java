@@ -9,13 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yooyu.backend.common.constants.AppConstant;
 import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.utils.Base64Util;
 import com.yooyu.backend.manager.PictureManager;
+import com.yooyu.backend.request.dto.InputPageParamDTO;
+import com.yooyu.backend.request.dto.PictureSearchConditionDTO;
 import com.yooyu.backend.request.dto.PictureSearchDTO;
 import com.yooyu.backend.request.dto.PictureUploadDTO;
 import com.yooyu.backend.response.dto.PictureSearchResultDTO;
 import com.yooyu.backend.response.dto.PictureUploadResultDTO;
+import com.yooyu.backend.service.PictureCacheService;
 import com.yooyu.backend.service.PictureHistoryService;
 import com.yooyu.backend.service.PictureService;
 
@@ -31,6 +35,8 @@ public class PictureManagerImpl implements PictureManager{
 	private PictureService pictureService;
 	@Autowired
 	private PictureHistoryService pictureHistoryService;
+	@Autowired
+	private PictureCacheService pictureCacheService;
 
 	@Override
 	public PictureUploadResultDTO upload(PictureUploadDTO pictureUploadDTO) {
@@ -63,10 +69,21 @@ public class PictureManagerImpl implements PictureManager{
 		return list;
 	}
 	
-
 	@Override
 	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO){
-		List<PictureSearchResultDTO> datas=pictureService.getPicListByCondition(pictureSearchDTO);
+		int dbCount=pictureService.getPicListByConditionCount(pictureSearchDTO);
+		int cachedCount=pictureCacheService.getPicListByConditionCount(pictureSearchDTO);
+		
+		List<PictureSearchResultDTO> datas = null;
+		if( dbCount == cachedCount){
+			datas = pictureCacheService.getPicListByCondition(pictureSearchDTO);
+		} else {
+			datas = pictureService.getPicListByCondition(pictureSearchDTO);
+			
+			List<PictureSearchResultDTO> list = pictureService.getPicListByCondition(initPictureSearchDTO());
+			pictureCacheService.savePicList(list);
+		}
+		
 		return datas;	
 	}
 
@@ -104,4 +121,12 @@ public class PictureManagerImpl implements PictureManager{
 		return true;
 	}
 
+	private PictureSearchDTO initPictureSearchDTO() {
+		PictureSearchConditionDTO pictureSearchConditionDTO=new PictureSearchConditionDTO();
+		pictureSearchConditionDTO.setAppId(AppConstant.APP_ID);
+		PictureSearchDTO pictureSearchDTO = PictureSearchDTO.builder();
+		pictureSearchDTO.setInputPage(InputPageParamDTO.builder());
+		pictureSearchDTO.setPicture(pictureSearchConditionDTO);
+		return pictureSearchDTO;
+	}
 }

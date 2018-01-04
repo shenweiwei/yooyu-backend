@@ -41,6 +41,19 @@
 		</where>
 	</select>
 	
+	<select id="findAllCount" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM "PICTURE"
+		<where>
+			<if test='ps.appId!=null and !"".equals(ps.appId)'>
+				"APP_ID"=#{ps.appId}
+			</if>
+			<if test='ps.userId!=null and !"".equals(ps.userId)'>
+				"USER_ID"=#{ps.userId}
+			</if>
+		</where>
+	</select>
+	
 	<select id="find" resultMap="pictureResultMap" parameterType="java.lang.String">
 		SELECT *
 		FROM "PICTURE"

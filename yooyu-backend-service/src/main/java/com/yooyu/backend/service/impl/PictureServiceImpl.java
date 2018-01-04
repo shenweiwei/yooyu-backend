@@ -108,4 +108,10 @@ public class PictureServiceImpl implements PictureService{
 		return response;
 	}
 
+	@Override
+	public int getPicListByConditionCount(PictureSearchDTO pictureSearchDTO) {
+		int count=pictureMapper.findAllCount(pictureSearchDTO.getPicture());
+		return count;
+	}
+
 }

@@ -1,0 +1,42 @@
+[2018-01-04 13:10:42,393][main][INFO][com.yooyu.backend.RestApplication:48] Starting RestApplication on DESKTOP-C6IC1IK with PID 14924 (C:\workspace\action\aws-yooyu\yooyu-backend\yooyu-backend-webapp\target\classes started by shen_ in C:\workspace\action\aws-yooyu\yooyu-backend\yooyu-backend-webapp)
+[2018-01-04 13:10:42,411][main][INFO][com.yooyu.backend.RestApplication:593] No active profile set, falling back to default profiles: default
+[2018-01-04 13:10:42,881][main][INFO][org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext:583] Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@9ebe38b: startup date [Thu Jan 04 13:10:42 CST 2018]; root of context hierarchy
+[2018-01-04 13:10:44,073][background-preinit][INFO][org.hibernate.validator.internal.util.Version:30] HV000001: Hibernate Validator 5.3.6.Final
+[2018-01-04 13:10:46,270][main][INFO][org.springframework.data.repository.config.RepositoryConfigurationDelegate:165] Multiple Spring Data modules found, entering strict repository configuration mode!
+[2018-01-04 13:10:47,501][main][INFO][org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor:155] JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2018-01-04 13:10:51,641][main][INFO][org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer:89] Tomcat initialized with port(s): 9090 (http)
+[2018-01-04 13:10:51,692][main][INFO][org.apache.catalina.core.StandardService:179] Starting service [Tomcat]
+[2018-01-04 13:10:51,697][main][INFO][org.apache.catalina.core.StandardEngine:179] Starting Servlet Engine: Apache Tomcat/8.5.23
+[2018-01-04 13:10:52,414][localhost-startStop-1][INFO][org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:179] Initializing Spring embedded WebApplicationContext
+[2018-01-04 13:10:52,415][localhost-startStop-1][INFO][org.springframework.web.context.ContextLoader:276] Root WebApplicationContext: initialization completed in 9547 ms
+[2018-01-04 13:10:52,897][localhost-startStop-1][INFO][org.reflections.Reflections:232] Reflections took 170 ms to scan 1 urls, producing 4 keys and 4 values 
+[2018-01-04 13:10:52,982][localhost-startStop-1][INFO][org.reflections.Reflections:232] Reflections took 10 ms to scan 1 urls, producing 2 keys and 2 values 
+[2018-01-04 13:10:55,409][localhost-startStop-1][INFO][org.springframework.boot.web.servlet.FilterRegistrationBean:258] Mapping filter: 'characterEncodingFilter' to: [/*]
+[2018-01-04 13:10:55,410][localhost-startStop-1][INFO][org.springframework.boot.web.servlet.FilterRegistrationBean:258] Mapping filter: 'requestContextFilter' to: [/*]
+[2018-01-04 13:10:55,411][localhost-startStop-1][INFO][org.springframework.boot.web.servlet.ServletRegistrationBean:190] Mapping servlet: 'com.yooyu.backend.webapp.config.JerseyConfig' to [/yooyu/*]
+[2018-01-04 13:11:03,062][main][INFO][org.springframework.jmx.export.annotation.AnnotationMBeanExporter:431] Registering beans for JMX exposure on startup
+[2018-01-04 13:11:03,124][main][INFO][org.apache.coyote.http11.Http11Nio2Protocol:179] Initializing ProtocolHandler ["http-nio2-9090"]
+[2018-01-04 13:11:03,166][main][INFO][org.apache.coyote.http11.Http11Nio2Protocol:179] Starting ProtocolHandler ["http-nio2-9090"]
+[2018-01-04 13:11:04,014][main][INFO][org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer:201] Tomcat started on port(s): 9090 (http)
+[2018-01-04 13:11:04,031][main][INFO][com.yooyu.backend.RestApplication:57] Started RestApplication in 23.571 seconds (JVM running for 28.871)
+[2018-01-04 13:15:30,834][main][INFO][com.yooyu.backend.RestApplication:48] Starting RestApplication on DESKTOP-C6IC1IK with PID 13532 (C:\workspace\action\aws-yooyu\yooyu-backend\yooyu-backend-webapp\target\classes started by shen_ in C:\workspace\action\aws-yooyu\yooyu-backend\yooyu-backend-webapp)
+[2018-01-04 13:15:30,850][main][INFO][com.yooyu.backend.RestApplication:593] No active profile set, falling back to default profiles: default
+[2018-01-04 13:15:31,150][main][INFO][org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext:583] Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@9ebe38b: startup date [Thu Jan 04 13:15:31 CST 2018]; root of context hierarchy
+[2018-01-04 13:15:31,956][background-preinit][INFO][org.hibernate.validator.internal.util.Version:30] HV000001: Hibernate Validator 5.3.6.Final
+[2018-01-04 13:15:34,469][main][INFO][org.springframework.data.repository.config.RepositoryConfigurationDelegate:165] Multiple Spring Data modules found, entering strict repository configuration mode!
+[2018-01-04 13:15:36,501][main][INFO][org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor:155] JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[2018-01-04 13:15:40,096][main][INFO][org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer:89] Tomcat initialized with port(s): 9090 (http)
+[2018-01-04 13:15:40,124][main][INFO][org.apache.catalina.core.StandardService:179] Starting service [Tomcat]
+[2018-01-04 13:15:40,128][main][INFO][org.apache.catalina.core.StandardEngine:179] Starting Servlet Engine: Apache Tomcat/8.5.23
+[2018-01-04 13:15:40,581][localhost-startStop-1][INFO][org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:179] Initializing Spring embedded WebApplicationContext
+[2018-01-04 13:15:40,582][localhost-startStop-1][INFO][org.springframework.web.context.ContextLoader:276] Root WebApplicationContext: initialization completed in 9439 ms
+[2018-01-04 13:15:41,100][localhost-startStop-1][INFO][org.reflections.Reflections:232] Reflections took 187 ms to scan 1 urls, producing 4 keys and 8 values 
+[2018-01-04 13:15:41,274][localhost-startStop-1][INFO][org.reflections.Reflections:232] Reflections took 16 ms to scan 1 urls, producing 2 keys and 2 values 
+[2018-01-04 13:15:43,560][localhost-startStop-1][INFO][org.springframework.boot.web.servlet.FilterRegistrationBean:258] Mapping filter: 'characterEncodingFilter' to: [/*]
+[2018-01-04 13:15:43,564][localhost-startStop-1][INFO][org.springframework.boot.web.servlet.FilterRegistrationBean:258] Mapping filter: 'requestContextFilter' to: [/*]
+[2018-01-04 13:15:43,566][localhost-startStop-1][INFO][org.springframework.boot.web.servlet.ServletRegistrationBean:190] Mapping servlet: 'com.yooyu.backend.webapp.config.JerseyConfig' to [/yooyu/*]
+[2018-01-04 13:15:50,491][main][INFO][org.springframework.jmx.export.annotation.AnnotationMBeanExporter:431] Registering beans for JMX exposure on startup
+[2018-01-04 13:15:50,551][main][INFO][org.apache.coyote.http11.Http11Nio2Protocol:179] Initializing ProtocolHandler ["http-nio2-9090"]
+[2018-01-04 13:15:50,658][main][INFO][org.apache.coyote.http11.Http11Nio2Protocol:179] Starting ProtocolHandler ["http-nio2-9090"]
+[2018-01-04 13:15:51,329][main][INFO][org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer:201] Tomcat started on port(s): 9090 (http)
+[2018-01-04 13:15:51,351][main][INFO][com.yooyu.backend.RestApplication:57] Started RestApplication in 22.05 seconds (JVM running for 26.459)

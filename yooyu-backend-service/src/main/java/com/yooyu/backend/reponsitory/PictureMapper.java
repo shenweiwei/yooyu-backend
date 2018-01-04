@@ -18,4 +18,6 @@ public interface PictureMapper {
 	public List<Picture> findAll(@Param("ps") PictureSearchConditionDTO pictureSearchConditionDTO,Page<?> page);
 	
 	public Picture find(@Param("fileId") String fileId);
+	
+	public int findAllCount(@Param("ps") PictureSearchConditionDTO pictureSearchConditionDTO);
 }

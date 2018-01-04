@@ -39,6 +39,14 @@ public interface PictureService {
 	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO);
 	
 	/**
+	 * 根据条件获取到图片列表总数
+	 * 
+	 * @param pictureSearchDTO
+	 * @return
+	 */
+	public int getPicListByConditionCount(PictureSearchDTO pictureSearchDTO);
+	
+	/**
 	 * 根据FileId获取到图片
 	 * 
 	 * @param key
