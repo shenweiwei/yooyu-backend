@@ -78,7 +78,7 @@ public class PictureServiceImpl implements PictureService{
 			imageList.add(pictureSearchResultDTO);
 		});
 		
-		if(imageList.isEmpty()){
+		if(list!=null && !list.isEmpty() && imageList.isEmpty()){
 			throw new BizException("get pic datas is error");
 		}
 		

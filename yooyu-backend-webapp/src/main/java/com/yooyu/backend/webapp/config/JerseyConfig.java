@@ -9,7 +9,7 @@ import org.reflections.Reflections;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ApplicationPath("/yooyu")
+@ApplicationPath("/rest")
 public class JerseyConfig extends ResourceConfig {
 	public JerseyConfig() {
 		scanPackages("com.yooyu.backend.webapp.controllers" , "com.yooyu.backend.webapp.filters");
