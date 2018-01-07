@@ -5,13 +5,13 @@ server:
 # Data Source
 spring:
   datasource:
-    url: jdbc:postgresql://postgresql.yooyu-family.cn:5432/yooyu-webapp
+    url: jdbc:postgresql://127.0.0.1:5432/yooyu-webapp
     username: postgres
     password: Pass1234
     driver-class-name: org.postgresql.Driver
   redis:
     database: 0
-    host: redis.yooyu-family.cn
+    host: 127.0.0.1
     port: 6379
     password: 
     pool: 
