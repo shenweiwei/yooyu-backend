@@ -34,8 +34,8 @@ import javax.ws.rs.ext.Provider;
 
 /*
 * 解除跨域访问限制
-* @author s8xriw
-* @date 2017年8月11日
+* @author shenweiwei
+* @date 2018年1月9日
 */
 @Provider
 public class CORSFilter implements ContainerResponseFilter {
