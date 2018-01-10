@@ -1,8 +1,10 @@
 package com.yooyu.backend.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -56,10 +58,13 @@ public class PictureServiceImpl implements PictureService{
 			byte[] bytes=Base64Util.GenerateBytes(pictureUploadDTO.getData());
 			requestBody=RequestBody.of(bytes);
 		}else {
-			requestBody=RequestBody.of(pictureUploadDTO.getInputStream(), pictureUploadDTO.getContentLength());
+			try {
+				requestBody=RequestBody.of(IOUtils.toByteArray(pictureUploadDTO.getInputStream()));
+			} catch (IOException e) {
+				throw new AppException("cast to byte array error");
+			}
 		}
-		System.out.println(requestBody);
-		System.out.println(pictureUploadDTO.getFileId());
+
 		PutObjectResponse response=pictureBucket.putObject(pictureUploadDTO.getFileId(), requestBody);
 		if(response == null) throw new AppException("upload picture error");
 		return response;
