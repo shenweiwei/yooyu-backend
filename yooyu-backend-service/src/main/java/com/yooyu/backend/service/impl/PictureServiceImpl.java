@@ -50,8 +50,15 @@ public class PictureServiceImpl implements PictureService{
 
 	@Override
 	public PutObjectResponse uploadPicToAwsS3(PictureUploadDTO pictureUploadDTO) {
-		byte[] bytes=Base64Util.GenerateBytes(pictureUploadDTO.getData());
-		RequestBody requestBody=RequestBody.of(bytes);
+		RequestBody requestBody;
+		
+		if(pictureUploadDTO.getData()!=null&&!"".equals(pictureUploadDTO.getData().trim())) {
+			byte[] bytes=Base64Util.GenerateBytes(pictureUploadDTO.getData());
+			requestBody=RequestBody.of(bytes);
+		}else {
+			requestBody=RequestBody.of(pictureUploadDTO.getInputStream(), pictureUploadDTO.getContentLength());
+		}
+		
 		PutObjectResponse response=pictureBucket.putObject(pictureUploadDTO.getFileId(), requestBody);
 		if(response == null) throw new AppException("upload picture error");
 		return response;
