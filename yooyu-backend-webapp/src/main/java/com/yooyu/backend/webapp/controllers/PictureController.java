@@ -46,8 +46,11 @@ public class PictureController {
 	public void uploadPic(@FormDataParam("file") InputStream fileInputStream,  
 	        @FormDataParam("file") FormDataContentDisposition disposition,
 	        PictureUploadVO pictureUploadVO) throws AppException{
+		System.out.println("1");
 		System.out.println(fileInputStream);
+		System.out.println("2");
 		System.out.println(disposition.getFileName());
+		System.out.println("3");
 //		PictureUploadDTO pictureUploadDTO=BeanUtil.map(pictureUploadVO, PictureUploadDTO.class);
 //		
 //		pictureManager.upload(pictureUploadDTO);
