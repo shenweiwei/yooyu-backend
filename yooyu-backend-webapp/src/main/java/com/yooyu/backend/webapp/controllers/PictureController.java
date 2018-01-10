@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yooyu.backend.common.exception.AppException;
@@ -31,7 +31,7 @@ import com.yooyu.backend.webapp.request.vo.PictureUploadVO;
 import com.yooyu.backend.webapp.response.vo.OutputPageParamVO;
 import com.yooyu.backend.webapp.response.vo.PictureSearchResultVO;
 
-@RestController
+@Controller
 @Path("/picture")
 public class PictureController {
 
