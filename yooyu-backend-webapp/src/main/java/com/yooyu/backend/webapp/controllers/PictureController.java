@@ -35,8 +35,6 @@ import com.yooyu.backend.webapp.response.vo.PictureSearchResultVO;
 
 @RestController
 @Path("/picture")
-@Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
-@Consumes("application/json;charset=utf-8")
 public class PictureController {
 	private Logger logger = LogManager.getLogger(this.getClass());
 	
@@ -47,13 +45,11 @@ public class PictureController {
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA) 
 	public void uploadPic(@FormDataParam("file") InputStream fileInputStream,  
-	        @FormDataParam("file") FormDataContentDisposition disposition,
-	        PictureUploadVO pictureUploadVO) throws AppException{
+	        @FormDataParam("file") FormDataContentDisposition disposition//,PictureUploadVO pictureUploadVO
+	        ) throws AppException{
 		
 		System.out.println("1");
-		logger.info(1);
 		System.out.println(fileInputStream);
-		logger.info(fileInputStream);
 		System.out.println("2");
 		System.out.println(disposition.getFileName());
 		System.out.println("3");
@@ -72,6 +68,8 @@ public class PictureController {
 	
 	@POST
 	@Path("/take/datas")
+	@Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
+	@Consumes("application/json;charset=utf-8")
 	public PageInfo<PictureSearchResultVO> getPicList(PictureSearchVO pictureSearchVO) throws AppException{
 		PictureSearchDTO pictureSearchDTO = packagePictureSearchDTO(pictureSearchVO);
 		
@@ -82,6 +80,8 @@ public class PictureController {
 	
 	@DELETE
 	@Path("/delete/{fileId}")
+	@Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
+	@Consumes("application/json;charset=utf-8")
 	public void deletePic(@PathParam("fileId") String fileId) throws AppException{
 		pictureManager.deletePicByFileId(fileId);
 	}

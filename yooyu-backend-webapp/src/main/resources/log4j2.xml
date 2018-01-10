@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--设置log4j2的自身log级别为warn -->
-<configuration status="info">
+<configuration status="WARN">
 	<properties>
 
 		<Property name="app_name">yooyu-backend-web</Property>
@@ -112,7 +112,7 @@
         </logger>  
 		<!--过滤掉spring和hibernate的一些无用的debug信息 -->
 
-		<root level="info">
+		<root level="INFO">
 			<appender-ref ref="Console" />
 			<appender-ref ref="RollingFileInfo" />
 			<appender-ref ref="RollingFileWarn" />
