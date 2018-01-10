@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -42,9 +43,10 @@ public class PictureController {
 	@Path("/upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public void uploadPic(@FormDataParam("file") InputStream fileInputStream,
-			@FormDataParam("file") FormDataContentDisposition disposition) throws AppException {
+			@FormDataParam("file") FormDataContentDisposition disposition,
+			@HeaderParam("content-length") String contentLength) throws AppException {
 		
-		PictureUploadDTO pictureUploadDTO = initPictureUploadDTO(fileInputStream, disposition);
+		PictureUploadDTO pictureUploadDTO = initPictureUploadDTO(fileInputStream, disposition,contentLength);
 		pictureManager.upload(pictureUploadDTO);
 	}
 
@@ -109,14 +111,12 @@ public class PictureController {
 		return OutputPageParamVO.builder(resultList);
 	}
 
-	private PictureUploadDTO initPictureUploadDTO(InputStream fileInputStream, FormDataContentDisposition disposition) {
-		System.out.println(disposition.getSize());
-		System.out.println(disposition.getFileName());
-		System.out.println(disposition.getType());
-		PictureUploadDTO pictureUploadDTO = PictureUploadDTO.builder().setContentLength(disposition.getSize())
+	private PictureUploadDTO initPictureUploadDTO(InputStream fileInputStream, FormDataContentDisposition disposition,String contentLength) {
+		System.out.println(contentLength);
+		PictureUploadDTO pictureUploadDTO = PictureUploadDTO.builder().setContentLength(Long.parseLong(contentLength))
 				.setInputStream(fileInputStream)
 				.setFileName(disposition.getFileName())
-				.setFileType(disposition.getType());
+				.setFileType(disposition.getFileName().substring(disposition.getFileName().indexOf(".")+1));
 
 		return pictureUploadDTO;
 	}
