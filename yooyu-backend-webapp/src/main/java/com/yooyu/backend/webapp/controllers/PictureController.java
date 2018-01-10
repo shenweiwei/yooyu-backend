@@ -33,7 +33,6 @@ import com.yooyu.backend.webapp.response.vo.PictureSearchResultVO;
 
 @RestController
 @Path("/picture")
-@Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
 public class PictureController {
 
 	@Autowired
@@ -44,7 +43,7 @@ public class PictureController {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public void uploadPic(@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition disposition) throws AppException {
-
+		
 		PictureUploadDTO pictureUploadDTO = initPictureUploadDTO(fileInputStream, disposition);
 		pictureManager.upload(pictureUploadDTO);
 	}
@@ -60,6 +59,7 @@ public class PictureController {
 	@POST
 	@Path("/take/datas")
 	@Consumes("application/json;charset=utf-8")
+	@Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
 	public PageInfo<PictureSearchResultVO> getPicList(PictureSearchVO pictureSearchVO) throws AppException {
 		PictureSearchDTO pictureSearchDTO = packagePictureSearchDTO(pictureSearchVO);
 
@@ -71,6 +71,7 @@ public class PictureController {
 	@DELETE
 	@Path("/delete/{fileId}")
 	@Consumes("application/json;charset=utf-8")
+	@Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
 	public void deletePic(@PathParam("fileId") String fileId) throws AppException {
 		pictureManager.deletePicByFileId(fileId);
 	}
