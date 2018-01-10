@@ -12,8 +12,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.hibernate.validator.internal.util.logging.Log_.logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +39,7 @@ import com.yooyu.backend.webapp.response.vo.PictureSearchResultVO;
 @Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
 @Consumes("application/json;charset=utf-8")
 public class PictureController {
+	private Logger logger = LogManager.getLogger(this.getClass());
 	
 	@Autowired
 	private PictureManager pictureManager;
@@ -46,8 +50,11 @@ public class PictureController {
 	public void uploadPic(@FormDataParam("file") InputStream fileInputStream,  
 	        @FormDataParam("file") FormDataContentDisposition disposition,
 	        PictureUploadVO pictureUploadVO) throws AppException{
+		
 		System.out.println("1");
+		logger.info(1);
 		System.out.println(fileInputStream);
+		logger.info(fileInputStream);
 		System.out.println("2");
 		System.out.println(disposition.getFileName());
 		System.out.println("3");
