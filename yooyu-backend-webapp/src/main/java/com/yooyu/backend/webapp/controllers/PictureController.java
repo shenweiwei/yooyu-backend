@@ -1,5 +1,6 @@
 package com.yooyu.backend.webapp.controllers;
 
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,10 +42,15 @@ public class PictureController {
 
 	@POST
 	@Path("/upload")
-	public void uploadPic(PictureUploadVO pictureUploadVO) throws AppException{
-		PictureUploadDTO pictureUploadDTO=BeanUtil.map(pictureUploadVO, PictureUploadDTO.class);
-		
-		pictureManager.upload(pictureUploadDTO);
+	@Consumes(MediaType.MULTIPART_FORM_DATA) 
+	public void uploadPic(@FormDataParam("file") InputStream fileInputStream,  
+	        @FormDataParam("file") FormDataContentDisposition disposition,
+	        PictureUploadVO pictureUploadVO) throws AppException{
+		System.out.println(fileInputStream);
+		System.out.println(disposition.getFileName());
+//		PictureUploadDTO pictureUploadDTO=BeanUtil.map(pictureUploadVO, PictureUploadDTO.class);
+//		
+//		pictureManager.upload(pictureUploadDTO);
 	}
 	
 	@POST
