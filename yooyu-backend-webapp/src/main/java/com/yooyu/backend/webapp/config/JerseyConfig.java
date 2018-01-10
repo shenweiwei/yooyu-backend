@@ -21,7 +21,8 @@ public class JerseyConfig extends ResourceConfig {
 			Reflections reflections = new Reflections(pack);
 			registerClasses(reflections.getTypesAnnotatedWith(Path.class));
 			registerClasses(reflections.getTypesAnnotatedWith(Provider.class));
-			registerClasses(MultiPartFeature.class); 
 		}
+		
+		register(MultiPartFeature.class); 
 	}
 }
