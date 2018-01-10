@@ -112,7 +112,6 @@ public class PictureController {
 	}
 
 	private PictureUploadDTO initPictureUploadDTO(InputStream fileInputStream, FormDataContentDisposition disposition,String contentLength) {
-		System.out.println(contentLength);
 		PictureUploadDTO pictureUploadDTO = PictureUploadDTO.builder().setContentLength(Long.parseLong(contentLength))
 				.setInputStream(fileInputStream)
 				.setFileName(disposition.getFileName())

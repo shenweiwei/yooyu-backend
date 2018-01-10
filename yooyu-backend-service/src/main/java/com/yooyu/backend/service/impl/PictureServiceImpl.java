@@ -58,7 +58,8 @@ public class PictureServiceImpl implements PictureService{
 		}else {
 			requestBody=RequestBody.of(pictureUploadDTO.getInputStream(), pictureUploadDTO.getContentLength());
 		}
-		
+		System.out.println(requestBody);
+		System.out.println(pictureUploadDTO.getFileId());
 		PutObjectResponse response=pictureBucket.putObject(pictureUploadDTO.getFileId(), requestBody);
 		if(response == null) throw new AppException("upload picture error");
 		return response;
