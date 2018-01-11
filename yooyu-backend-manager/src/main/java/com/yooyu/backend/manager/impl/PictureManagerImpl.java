@@ -1,5 +1,6 @@
 package com.yooyu.backend.manager.impl;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,11 +27,10 @@ import com.yooyu.backend.service.PictureService;
 import software.amazon.awssdk.core.sync.ResponseBytes;
 import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 @Component
-@Transactional(rollbackFor=Exception.class)
-public class PictureManagerImpl implements PictureManager{
+@Transactional(rollbackFor = Exception.class)
+public class PictureManagerImpl implements PictureManager {
 	@Autowired
 	private PictureService pictureService;
 	@Autowired
@@ -41,50 +41,55 @@ public class PictureManagerImpl implements PictureManager{
 	@Override
 	public PictureUploadResultDTO upload(PictureUploadDTO pictureUploadDTO) {
 		pictureUploadDTO.setFileId(generatekey(pictureUploadDTO.getFileName()));
+
+		final File file = pictureService.uploadPicToDisk(pictureUploadDTO);
+		pictureService.savePic(pictureUploadDTO.getFileId());
 		
-		PutObjectResponse response=pictureService.uploadPicToAwsS3(pictureUploadDTO);
-		if(response == null) throw new AppException("upload picture to aws s3 eror"); 
-		
-		pictureService.savePic(response,pictureUploadDTO.getFileId());
-		PictureUploadResultDTO pictureUploadResultDTO=PictureUploadResultDTO.builder().setFileId(pictureUploadDTO.getFileId());
-		
+		PictureUploadResultDTO pictureUploadResultDTO = PictureUploadResultDTO.builder()
+				.setFileId(pictureUploadDTO.getFileId());
+
+		pictureService.uploadPicToAwsS3(pictureUploadDTO, file);
+
 		return pictureUploadResultDTO.setResult(true);
 	}
 
 	@Override
 	public List<PictureUploadResultDTO> multipleUpload(List<PictureUploadDTO> pictureUploadDTOList) {
 		List<PictureUploadResultDTO> list = new LinkedList<>();
-		
+
 		pictureUploadDTOList.forEach(pictureUploadDTO -> {
-			pictureUploadDTO.setFileName(generatekey(pictureUploadDTO.getFileName()));
+			pictureUploadDTO.setFileId(generatekey(pictureUploadDTO.getFileName()));
+
+			final File file = pictureService.uploadPicToDisk(pictureUploadDTO);
+			pictureService.savePic(pictureUploadDTO.getFileId());
 			
-			PutObjectResponse response=pictureService.uploadPicToAwsS3(pictureUploadDTO);
-			pictureService.savePic(response,pictureUploadDTO.getFileName());
-			
-			PictureUploadResultDTO pictureUploadResultDTO=PictureUploadResultDTO.builder().setFileId(pictureUploadDTO.getFileId());
-			
+			PictureUploadResultDTO pictureUploadResultDTO = PictureUploadResultDTO.builder()
+					.setFileId(pictureUploadDTO.getFileId());
+
+			pictureService.uploadPicToAwsS3(pictureUploadDTO, file);
+
 			list.add(pictureUploadResultDTO.setResult(true));
 		});
-		
+
 		return list;
 	}
-	
+
 	@Override
-	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO){
-		int dbCount=pictureService.getPicListByConditionCount(pictureSearchDTO);
-		int cachedCount=pictureCacheService.getPicListByConditionCount(pictureSearchDTO);
-		
+	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO) {
+		int dbCount = pictureService.getPicListByConditionCount(pictureSearchDTO);
+		int cachedCount = pictureCacheService.getPicListByConditionCount(pictureSearchDTO);
+
 		List<PictureSearchResultDTO> datas = null;
-		if( dbCount == cachedCount){
+		if (dbCount == cachedCount) {
 			datas = pictureCacheService.getPicListByCondition(pictureSearchDTO);
 		} else {
 			datas = pictureService.getPicListByCondition(pictureSearchDTO);
-			
+
 			List<PictureSearchResultDTO> list = pictureService.getPicListByCondition(initPictureSearchDTO());
 			pictureCacheService.savePicList(list);
 		}
-		
-		return datas;	
+
+		return datas;
 	}
 
 	/**
@@ -93,36 +98,37 @@ public class PictureManagerImpl implements PictureManager{
 	 * @param filename
 	 * @return
 	 */
-	private String generatekey(String filename){
-		StringBuilder key=new StringBuilder();
-		String date=new Timestamp(System.currentTimeMillis()).toString().substring(0,10);
+	private String generatekey(String filename) {
+		StringBuilder key = new StringBuilder();
+		String date = new Timestamp(System.currentTimeMillis()).toString().substring(0, 10);
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 		key.append(date).append("_").append(uuid).append("_").append(filename);
 		return key.toString();
 	}
 
-
 	@Override
-	public boolean deletePicByFileId(String fileId) {	
-		//获取s3图片
+	public boolean deletePicByFileId(String fileId) {
+		// 获取s3图片
 		ResponseBytes<GetObjectResponse> getResponse = pictureService.getPicByFileId(fileId);
-		if(getResponse == null) throw new AppException("get pic to aws s3 error");
-		//转成base64
-		String image=Base64Util.GenerateBase64(getResponse.asByteArray());
-		//保存到历史表
+		if (getResponse == null)
+			throw new AppException("get pic to aws s3 error");
+		// 转成base64
+		String image = Base64Util.GenerateBase64(getResponse.asByteArray());
+		// 保存到历史表
 		pictureHistoryService.save(fileId, image);
-		//删除图片表
+		// 删除图片表
 		pictureService.deletePicByFileId(fileId);
-		//删除s3图片
+		// 删除s3图片
 		DeleteObjectResponse deleteResponse = pictureService.deletePicToAwsS3(fileId);
-		
-		if(deleteResponse == null) throw new AppException("delete pic to aws s3 error");
-		
+
+		if (deleteResponse == null)
+			throw new AppException("delete pic to aws s3 error");
+
 		return true;
 	}
 
 	private PictureSearchDTO initPictureSearchDTO() {
-		PictureSearchConditionDTO pictureSearchConditionDTO=new PictureSearchConditionDTO();
+		PictureSearchConditionDTO pictureSearchConditionDTO = new PictureSearchConditionDTO();
 		pictureSearchConditionDTO.setAppId(AppConstant.APP_ID);
 		PictureSearchDTO pictureSearchDTO = PictureSearchDTO.builder();
 		pictureSearchDTO.setInputPage(InputPageParamDTO.builder());

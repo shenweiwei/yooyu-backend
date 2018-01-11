@@ -1,9 +1,6 @@
 package com.yooyu.backend.common.utils;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.springframework.util.Base64Utils;
@@ -12,22 +9,9 @@ import com.yooyu.backend.common.exception.AppException;
 
 public class Base64Util {
 	// 图片转化成base64字符串  
-	public static String GetImageStr(String imgFile,String targetPath) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理  
-        InputStream in = null;  
-        byte[] data = null;  
-        // 读取图片字节数组  
-        try {  
-            if(imgFile==null||"".equals(imgFile)){  
-                imgFile=targetPath;  
-            }  
-            in = new FileInputStream(imgFile);  
-            data = new byte[in.available()];  
-            in.read(data);  
-            in.close();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-        // 对字节数组Base64编码  
+	public static String GetImageStr(String imgFile) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理  
+		byte[] data = Base64Utils.decodeFromString(imgFile);
+		
         return Base64Utils.encodeToString(data);
     }  
   
@@ -44,8 +28,7 @@ public class Base64Util {
                 }  
             }  
             // 生成jpeg图片  
-            String imgFilePath = targetPath;// 新生成的图片  
-            OutputStream out = new FileOutputStream(imgFilePath);  
+            OutputStream out = new FileOutputStream(targetPath);  // 新生成的图片  
             out.write(b);  
             out.flush();  
             out.close();  
@@ -62,8 +45,7 @@ public class Base64Util {
         
         try {  
             // Base64解码  
-            byte[] b = Base64Utils.decodeFromString(imgStr);
-            return b;
+            return Base64Utils.decodeFromString(imgStr);
         } catch (Exception e) {  
             throw new AppException("image cast byte error");
         }  

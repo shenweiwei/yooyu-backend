@@ -1,12 +1,15 @@
 package com.yooyu.backend.service.impl;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.yooyu.backend.client.bucket.PictureBucket;
@@ -29,102 +32,144 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 @Service
-public class PictureServiceImpl implements PictureService{
+public class PictureServiceImpl implements PictureService {
 	@Autowired
 	private PictureMapper pictureMapper;
-	
+
 	@Autowired
 	private PictureBucket pictureBucket;
-	
+
 	@Value("${app.id}")
 	private String app_id;
 
+	@Value("${app.pic-cache-location}")
+	private String pic_cache_location;
+
 	@Override
-	public boolean savePic(PutObjectResponse response,String key) {
-		//初始化图片对象
-		Picture picture=initPicture(response,key);
-		
-		int count=pictureMapper.upload(picture);
-		
-		if(count <= 0) throw new BizException("insert picture error");
+	public boolean savePic(String key) {
+		// 初始化图片对象
+		Picture picture = initPicture(key);
+
+		int count = pictureMapper.upload(picture);
+
+		if (count <= 0)
+			throw new BizException("insert picture error");
 		return true;
 	}
 
 	@Override
-	public PutObjectResponse uploadPicToAwsS3(PictureUploadDTO pictureUploadDTO) {
+	@Async("threadPoolExecuter")
+	public PutObjectResponse uploadPicToAwsS3(PictureUploadDTO pictureUploadDTO, File file) {
 		RequestBody requestBody;
-		
-		if(pictureUploadDTO.getData()!=null&&!"".equals(pictureUploadDTO.getData().trim())) {
-			byte[] bytes=Base64Util.GenerateBytes(pictureUploadDTO.getData());
-			requestBody=RequestBody.of(bytes);
-		}else {
-			try {
-				requestBody=RequestBody.of(IOUtils.toByteArray(pictureUploadDTO.getInputStream()));
-			} catch (IOException e) {
-				throw new AppException("cast to byte array error");
-			}
+
+		if (pictureUploadDTO.getData() != null && !"".equals(pictureUploadDTO.getData().trim())) {
+			byte[] bytes = Base64Util.GenerateBytes(pictureUploadDTO.getData());
+			requestBody = RequestBody.of(bytes);
+		} else {
+			requestBody = RequestBody.of(file);
 		}
 
-		PutObjectResponse response=pictureBucket.putObject(pictureUploadDTO.getFileId(), requestBody);
-		if(response == null) throw new AppException("upload picture error");
+		PutObjectResponse response = pictureBucket.putObject(pictureUploadDTO.getFileId(), requestBody);
+		if (response == null)
+			throw new AppException("upload picture error");
+
+		this.updatePicByFileId(pictureUploadDTO, response);
 		return response;
 	}
-	
-	public Picture initPicture(PutObjectResponse response,String key) {
-		Picture picture = Picture.builder()
-				.setAppId(app_id)
-				.setFileId(key)
-				.seteTag(response.eTag())
-				.setVersionId(response.versionId());
-		return picture;
+
+	@Override
+	public File uploadPicToDisk(PictureUploadDTO pictureUploadDTO) {
+		this.createNowDayDir();
+
+		try {
+			File picFile = new File(pic_cache_location.concat(pictureUploadDTO.getFileId()));
+			FileUtils.copyInputStreamToFile(pictureUploadDTO.getInputStream(), picFile);
+			return picFile;
+		} catch (IOException e) {
+			throw new AppException("upload picture to disk error");
+		}
 	}
 
 	@Override
 	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO) {
-		List<Picture> list=pictureMapper.findAll(pictureSearchDTO.getPicture(),PageUtil.getPage(pictureSearchDTO.getInputPage()));
-		List<PictureSearchResultDTO> imageList=new ArrayList<>();
-		
-		list.forEach( picture -> { 
-			ResponseBytes<GetObjectResponse> response=pictureBucket.getObject(picture.getFileId());
-			String image=Base64Util.GenerateBase64(response.asByteArray());
-			PictureSearchResultDTO pictureSearchResultDTO=BeanUtil.map(picture, PictureSearchResultDTO.class).setData(image);
+		List<Picture> list = pictureMapper.findAll(pictureSearchDTO.getPicture(),
+				PageUtil.getPage(pictureSearchDTO.getInputPage()));
+		List<PictureSearchResultDTO> imageList = new ArrayList<>();
+
+		list.forEach(picture -> {
+			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
+			String image = Base64Util.GenerateBase64(response.asByteArray());
+			PictureSearchResultDTO pictureSearchResultDTO = BeanUtil.map(picture, PictureSearchResultDTO.class)
+					.setData(image);
 			imageList.add(pictureSearchResultDTO);
 		});
-		
-		if(list!=null && !list.isEmpty() && imageList.isEmpty()){
+
+		if (list != null && !list.isEmpty() && imageList.isEmpty()) {
 			throw new BizException("get pic datas is error");
 		}
-		
+
 		return imageList;
 	}
 
 	@Override
 	public boolean deletePicByFileId(String key) {
-		int count=pictureMapper.delete(key);
-		
-		if(count <= 0) throw new BizException("insert picture error");
-		
+		int count = pictureMapper.delete(key);
+
+		if (count <= 0)
+			throw new BizException("insert picture error");
+
 		return true;
 	}
 
 	@Override
 	public DeleteObjectResponse deletePicToAwsS3(String key) {
 		DeleteObjectResponse response = pictureBucket.deleteObject(key);
-		if(response == null) throw new AppException("delete picture error");
+		if (response == null)
+			throw new AppException("delete picture error");
 		return response;
 	}
 
 	@Override
 	public ResponseBytes<GetObjectResponse> getPicByFileId(String key) {
-		ResponseBytes<GetObjectResponse> response=pictureBucket.getObject(key);
-		if(response == null) throw new AppException("get picture error");
+		ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(key);
+		if (response == null)
+			throw new AppException("get picture error");
 		return response;
 	}
 
 	@Override
 	public int getPicListByConditionCount(PictureSearchDTO pictureSearchDTO) {
-		int count=pictureMapper.findAllCount(pictureSearchDTO.getPicture());
+		int count = pictureMapper.findAllCount(pictureSearchDTO.getPicture());
 		return count;
 	}
 
+	private Picture initPicture(String key) {
+		Picture picture = Picture.builder().setAppId(app_id).setFileId(key);
+		return picture;
+	}
+
+	/**
+	 * 创建当前日期的目录（精确到天）
+	 */
+	private void createNowDayDir() {
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		String date = ts.toString().substring(0, 10);
+
+		File file = new File(pic_cache_location.concat(date));
+
+		try {
+			FileUtils.forceMkdir(file);
+		} catch (IOException e) {
+			throw new AppException("mkdir error");
+		}
+	}
+
+	@Override
+	public boolean updatePicByFileId(PictureUploadDTO pictureUploadDTO, PutObjectResponse response) {
+		Picture picture = Picture.builder().setFileId(pictureUploadDTO.getFileId()).seteTag(response.eTag())
+				.setVersionId(response.versionId()).setRemark("synced");
+		int count = pictureMapper.update(picture);
+
+		return count <= 0 ? false : true;
+	}
 }

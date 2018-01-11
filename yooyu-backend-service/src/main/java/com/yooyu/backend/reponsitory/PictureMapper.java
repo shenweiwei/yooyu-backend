@@ -13,6 +13,8 @@ import com.yooyu.backend.request.dto.PictureSearchConditionDTO;
 public interface PictureMapper {
 	public int upload(Picture picture);
 	
+	public int update(Picture picture);
+	
 	public int delete(@Param("fileId") String fileId);
 
 	public List<Picture> findAll(@Param("ps") PictureSearchConditionDTO pictureSearchConditionDTO,Page<?> page);
