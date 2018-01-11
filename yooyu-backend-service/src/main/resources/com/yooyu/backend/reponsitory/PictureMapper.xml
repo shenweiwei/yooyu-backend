@@ -26,7 +26,7 @@
 	
 	<update id="update" parameterType="com.yooyu.backend.db.pojo.Picture">
 		UPDATE "PICTURE"
-		SET "E_TAG"=#{eTag},"VERSION_ID"={versionId},"REMARK"={remark,jdbcType=VARCHAR},"UPDATE_DATE"=now(),"UPDATE_BY"=-1
+		SET "E_TAG"=#{eTag},"VERSION_ID"=#{versionId},"REMARK"=#{remark,jdbcType=VARCHAR},"UPDATE_DATE"=now(),"UPDATE_BY"=-1
 		WHERE "FILE_ID"=#{fileId}
 	</update>
 	
