@@ -6,12 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.springframework.util.Base64Utils;
+
 import com.yooyu.backend.common.exception.AppException;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-@SuppressWarnings("restriction")
 public class Base64Util {
 	// 图片转化成base64字符串  
 	public static String GetImageStr(String imgFile,String targetPath) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理  
@@ -30,18 +28,16 @@ public class Base64Util {
             e.printStackTrace();  
         }  
         // 对字节数组Base64编码  
-        BASE64Encoder encoder = new BASE64Encoder();  
-        return encoder.encode(data);// 返回Base64编码过的字节数组字符串  
+        return Base64Utils.encodeToString(data);
     }  
   
     // base64字符串转化成图片  
 	public static boolean GenerateImage(String imgStr,String targetPath) { // 对字节数组字符串进行Base64解码并生成图片  
         if (imgStr == null) // 图像数据为空  
             return false;  
-        BASE64Decoder decoder = new BASE64Decoder();  
         try {  
             // Base64解码  
-            byte[] b = decoder.decodeBuffer(imgStr);  
+            byte[] b = Base64Utils.decodeFromString(imgStr);
             for (int i = 0; i < b.length; ++i) {  
                 if (b[i] < 0) {// 调整异常数据  
                     b[i] += 256;  
@@ -63,10 +59,10 @@ public class Base64Util {
 	public static byte[] GenerateBytes(String imgStr) { // 对字节数组字符串进行Base64解码并生成图片  
         if (imgStr == null) // 图像数据为空  
             return null;  
-        BASE64Decoder decoder = new BASE64Decoder();  
+        
         try {  
             // Base64解码  
-            byte[] b = decoder.decodeBuffer(imgStr);  
+            byte[] b = Base64Utils.decodeFromString(imgStr);
             return b;
         } catch (Exception e) {  
             throw new AppException("image cast byte error");
@@ -80,7 +76,6 @@ public class Base64Util {
         	return null;
         }
             
-        BASE64Encoder encoder = new BASE64Encoder();  
-        return encoder.encode(bytes);
+        return Base64Utils.encodeToString(bytes);
     }  
 }
