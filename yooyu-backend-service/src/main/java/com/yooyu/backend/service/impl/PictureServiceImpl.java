@@ -155,7 +155,7 @@ public class PictureServiceImpl implements PictureService {
 	private String createNowDayDir() {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		String date = ts.toString().substring(0, 10);
-		String path = pic_cache_location.concat(date);
+		String path = pic_cache_location.concat(date).concat("/");
 		File file = new File(path);
 
 		try {
