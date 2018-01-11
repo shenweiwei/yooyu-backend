@@ -79,10 +79,10 @@ public class PictureServiceImpl implements PictureService {
 
 	@Override
 	public File uploadPicToDisk(PictureUploadDTO pictureUploadDTO) {
-		this.createNowDayDir();
+		String dirPath = this.createNowDayDir();
 
 		try {
-			File picFile = new File(pic_cache_location.concat(pictureUploadDTO.getFileId()));
+			File picFile = new File(dirPath.concat(pictureUploadDTO.getFileId()));
 			FileUtils.copyInputStreamToFile(pictureUploadDTO.getInputStream(), picFile);
 			return picFile;
 		} catch (IOException e) {
@@ -150,18 +150,21 @@ public class PictureServiceImpl implements PictureService {
 
 	/**
 	 * 创建当前日期的目录（精确到天）
+	 * @return file path
 	 */
-	private void createNowDayDir() {
+	private String createNowDayDir() {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		String date = ts.toString().substring(0, 10);
-
-		File file = new File(pic_cache_location.concat(date));
+		String path = pic_cache_location.concat(date);
+		File file = new File(path);
 
 		try {
 			FileUtils.forceMkdir(file);
 		} catch (IOException e) {
 			throw new AppException("mkdir error");
 		}
+		
+		return path;
 	}
 
 	@Override
