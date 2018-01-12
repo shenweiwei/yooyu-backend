@@ -193,7 +193,7 @@ public class PictureServiceImpl implements PictureService {
 	private void checkLocationDiskFile(Picture picture) {
 		File file = FileUtils.getFile(picture.getDiskLoaction());
 		if (!file.exists()) {
-			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getUrl());
+			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
 			InputStream inputStream = new ByteArrayInputStream(response.asByteArray()); 
 			try {
 				FileUtils.copyInputStreamToFile(inputStream, file);
