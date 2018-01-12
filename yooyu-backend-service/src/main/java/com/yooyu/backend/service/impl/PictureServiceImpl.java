@@ -1,7 +1,5 @@
 package com.yooyu.backend.service.impl;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
