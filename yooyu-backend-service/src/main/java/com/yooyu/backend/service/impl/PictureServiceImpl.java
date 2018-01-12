@@ -92,7 +92,7 @@ public class PictureServiceImpl implements PictureService {
 		List<PictureSearchResultDTO> imageList = new ArrayList<>();
 
 		list.forEach(picture -> {
-			this.checkLocationDiskFile(picture);
+			if(ischeck) this.checkLocationDiskFile(picture);
 
 			PictureSearchResultDTO pictureSearchResultDTO = BeanUtil.map(picture, PictureSearchResultDTO.class);
 			imageList.add(pictureSearchResultDTO);
