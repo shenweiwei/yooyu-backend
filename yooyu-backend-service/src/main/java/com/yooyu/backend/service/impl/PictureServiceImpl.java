@@ -149,7 +149,7 @@ public class PictureServiceImpl implements PictureService {
 		logger.info(fullPath.toString());
 
 		Picture picture = Picture.builder().setAppId(app_id).setFileId(key).setUrl(fullPath.toString())
-				.setDiskLoaction(filePath);
+				.setDiskLocation(filePath);
 		return picture;
 	}
 
@@ -190,7 +190,7 @@ public class PictureServiceImpl implements PictureService {
 	 */
 	@Async("threadPoolExecuter")
 	private void checkLocationDiskFile(Picture picture) {
-		File file = FileUtils.getFile(picture.getDiskLoaction());
+		File file = FileUtils.getFile(picture.getDiskLocation());
 
 		if (!file.exists() && !file.isDirectory()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());

@@ -9,7 +9,7 @@ public class Picture {
 	private String eTag;
 	private String versionId;
 	private String url;
-	private String diskLoaction;
+	private String diskLocation;
 	private short valid;
 	private String remark;
 	private long userId;
@@ -109,11 +109,11 @@ public class Picture {
 		this.url = url;
 		return this;
 	}
-	public String getDiskLoaction() {
-		return diskLoaction;
+	public String getDiskLocation() {
+		return diskLocation;
 	}
-	public Picture setDiskLoaction(String diskLoaction) {
-		this.diskLoaction = diskLoaction;
+	public Picture setDiskLocation(String diskLocation) {
+		this.diskLocation = diskLocation;
 		return this;
 	}
 	public static Picture builder(){
