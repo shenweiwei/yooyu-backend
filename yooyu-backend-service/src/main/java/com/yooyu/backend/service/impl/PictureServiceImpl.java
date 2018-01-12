@@ -191,7 +191,7 @@ public class PictureServiceImpl implements PictureService {
 	@Async("threadPoolExecuter")
 	private void checkLocationDiskFile(Picture picture) {
 		File file = FileUtils.getFile(picture.getDiskLocation());
-
+		logger.info(file.exists());
 		if (!file.exists() && !file.isDirectory()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
 			try {

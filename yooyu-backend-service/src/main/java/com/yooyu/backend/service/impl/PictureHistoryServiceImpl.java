@@ -21,10 +21,9 @@ public class PictureHistoryServiceImpl implements PictureHistoryService{
 	private PictureMapper pictureMapper;
 
 	@Override
-	public boolean save(String fileId,String data) {
+	public boolean save(String fileId) {
 		Picture picture=pictureMapper.find(fileId);
 		PictureHistory pictureHistory=BeanUtil.map(picture, PictureHistory.class);
-		pictureHistory.setData(data);
 		pictureHistory.setPictureId(picture.getId());
 		int count=pictureHistoryMapper.save(pictureHistory);
 		

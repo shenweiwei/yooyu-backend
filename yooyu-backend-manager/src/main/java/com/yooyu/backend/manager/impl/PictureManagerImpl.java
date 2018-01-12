@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yooyu.backend.common.constants.AppConstant;
-import com.yooyu.backend.common.exception.AppException;
-import com.yooyu.backend.common.utils.Base64Util;
 import com.yooyu.backend.manager.PictureManager;
 import com.yooyu.backend.request.dto.InputPageParamDTO;
 import com.yooyu.backend.request.dto.PictureSearchConditionDTO;
@@ -23,10 +21,6 @@ import com.yooyu.backend.response.dto.PictureUploadResultDTO;
 import com.yooyu.backend.service.PictureCacheService;
 import com.yooyu.backend.service.PictureHistoryService;
 import com.yooyu.backend.service.PictureService;
-
-import software.amazon.awssdk.core.sync.ResponseBytes;
-import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 @Component
 @Transactional(rollbackFor = Exception.class)
@@ -109,21 +103,10 @@ public class PictureManagerImpl implements PictureManager {
 
 	@Override
 	public boolean deletePicByFileId(String fileId) {
-		// 获取s3图片
-		ResponseBytes<GetObjectResponse> getResponse = pictureService.getPicByFileId(fileId);
-		if (getResponse == null)
-			throw new AppException("get pic to aws s3 error");
-		// 转成base64
-		String image = Base64Util.GenerateBase64(getResponse.asByteArray());
 		// 保存到历史表
-		pictureHistoryService.save(fileId, image);
+		pictureHistoryService.save(fileId);
 		// 删除图片表
 		pictureService.deletePicByFileId(fileId);
-		// 删除s3图片
-		DeleteObjectResponse deleteResponse = pictureService.deletePicToAwsS3(fileId);
-
-		if (deleteResponse == null)
-			throw new AppException("delete pic to aws s3 error");
 
 		return true;
 	}
