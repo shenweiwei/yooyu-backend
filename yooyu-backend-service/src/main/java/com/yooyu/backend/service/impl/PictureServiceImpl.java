@@ -152,12 +152,10 @@ public class PictureServiceImpl implements PictureService {
 	}
 
 	private Picture initPicture(String key,String filePath) {
-		logger.info(filePath);
 		String[] paths = filePath.split("\\\\");
-		logger.info(paths.length);
 		String fileName = paths[paths.length-1];
 		String childPath = paths[paths.length-2];
-		StringBuffer fullPath = new StringBuffer(pic_disk_url_location).append(childPath).append(fileName);
+		StringBuffer fullPath = new StringBuffer(pic_disk_url_location).append(childPath).append("/").append(fileName);
 		logger.info(fullPath.toString());
 		
 		Picture picture = Picture.builder()
