@@ -23,7 +23,7 @@
 	<insert id="upload" parameterType="com.yooyu.backend.db.pojo.Picture">
 		INSERT INTO
 		"PICTURE"("ID","FILE_ID","APP_ID","URL","DISK_LOCATION","E_TAG","VERSION_ID","VALID","REMARK","USER_ID","CREATE_DATE","CREATE_BY","UPDATE_DATE","UPDATE_BY")
-		VALUES(NEXTVAL('"PICTURE_ID_SEQ"'),#{fileId},#{appId},#{url},#{diskLoaction},#{eTag,jdbcType=VARCHAR},#{versionId,jdbcType=VARCHAR},1,null,null,now(),-1,null,null)
+		VALUES(NEXTVAL('"PICTURE_ID_SEQ"'),#{fileId},#{appId},#{url},#{diskLocation},#{eTag,jdbcType=VARCHAR},#{versionId,jdbcType=VARCHAR},1,null,null,now(),-1,null,null)
 	</insert>
 	
 	<update id="update" parameterType="com.yooyu.backend.db.pojo.Picture">
