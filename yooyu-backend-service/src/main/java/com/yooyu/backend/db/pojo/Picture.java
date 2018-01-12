@@ -8,6 +8,7 @@ public class Picture {
 	private String appId;
 	private String eTag;
 	private String versionId;
+	private String data;
 	private short valid;
 	private String remark;
 	private long userId;
@@ -98,6 +99,15 @@ public class Picture {
 	}
 	public Picture setUpdateBy(long updateBy) {
 		this.updateBy = updateBy;
+		return this;
+	}
+
+	public String getData() {
+		return data;
+	}
+	
+	public Picture setData(String data) {
+		this.data = data;
 		return this;
 	}
 	

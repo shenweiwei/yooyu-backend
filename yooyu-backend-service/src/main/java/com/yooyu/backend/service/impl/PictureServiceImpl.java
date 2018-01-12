@@ -42,13 +42,16 @@ public class PictureServiceImpl implements PictureService {
 	@Value("${app.id}")
 	private String app_id;
 
-	@Value("${app.pic-cache-location}")
-	private String pic_cache_location;
+	@Value("${app.pic-disk-location}")
+	private String pic_disk_location;
+	
+	@Value("${app.pic-disk-url-location}")
+	private String pic_disk_url_location;
 
 	@Override
-	public boolean savePic(String key) {
+	public boolean savePic(String key,String filePath) {
 		// 初始化图片对象
-		Picture picture = initPicture(key);
+		Picture picture = initPicture(key,filePath);
 
 		int count = pictureMapper.upload(picture);
 
@@ -143,8 +146,17 @@ public class PictureServiceImpl implements PictureService {
 		return count;
 	}
 
-	private Picture initPicture(String key) {
-		Picture picture = Picture.builder().setAppId(app_id).setFileId(key);
+	private Picture initPicture(String key,String filePath) {
+		String[] paths = filePath.split("/");
+		String fileName = paths[paths.length];
+		String childPath = paths[paths.length-1];
+		StringBuffer fullPath = new StringBuffer(pic_disk_url_location).append(childPath).append(fileName);
+		System.out.println(fullPath.toString());
+		
+		Picture picture = Picture.builder()
+				.setAppId(app_id)
+				.setFileId(key)
+				.setData(fullPath.toString());
 		return picture;
 	}
 
@@ -155,7 +167,7 @@ public class PictureServiceImpl implements PictureService {
 	private String createNowDayDir() {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		String date = ts.toString().substring(0, 10);
-		String path = pic_cache_location.concat(date).concat("/");
+		String path = pic_disk_location.concat(date).concat("/");
 		File file = new File(path);
 
 		try {

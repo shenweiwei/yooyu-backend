@@ -43,7 +43,7 @@ public class PictureManagerImpl implements PictureManager {
 		pictureUploadDTO.setFileId(generatekey(pictureUploadDTO.getFileName()));
 
 		final File file = pictureService.uploadPicToDisk(pictureUploadDTO);
-		pictureService.savePic(pictureUploadDTO.getFileId());
+		pictureService.savePic(pictureUploadDTO.getFileId(),file.getPath());
 		
 		PictureUploadResultDTO pictureUploadResultDTO = PictureUploadResultDTO.builder()
 				.setFileId(pictureUploadDTO.getFileId());
@@ -61,7 +61,7 @@ public class PictureManagerImpl implements PictureManager {
 			pictureUploadDTO.setFileId(generatekey(pictureUploadDTO.getFileName()));
 
 			final File file = pictureService.uploadPicToDisk(pictureUploadDTO);
-			pictureService.savePic(pictureUploadDTO.getFileId());
+			pictureService.savePic(pictureUploadDTO.getFileId(),file.getPath());
 			
 			PictureUploadResultDTO pictureUploadResultDTO = PictureUploadResultDTO.builder()
 					.setFileId(pictureUploadDTO.getFileId());

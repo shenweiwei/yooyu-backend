@@ -37,6 +37,7 @@ aws:
 # app
 app:
   id: yooyu-webapp
-  pic-cache-location: G:/cache-pic/
+  pic-disk-location: D:/disk-pic/
+  pic-disk-url-location: http://yooyu-family.cn:8888/static/images/
 
 

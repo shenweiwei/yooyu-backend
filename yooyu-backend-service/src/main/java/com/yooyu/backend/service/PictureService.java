@@ -20,7 +20,7 @@ public interface PictureService {
 	 * @param key
 	 * @return
 	 */
-	public boolean savePic(String key);
+	public boolean savePic(String key,String filePath);
 
 	/**
 	 * 把图片上传到AWS S3
