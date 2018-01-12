@@ -20,7 +20,7 @@ public interface PictureService {
 	 * @param key
 	 * @return
 	 */
-	public boolean savePic(String key,String filePath);
+	public boolean savePic(String key, String filePath);
 
 	/**
 	 * 把图片上传到AWS S3
@@ -43,7 +43,7 @@ public interface PictureService {
 	 * @param pictureSearchDTO
 	 * @return
 	 */
-	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO);
+	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO, boolean ischeck);
 
 	/**
 	 * 根据条件获取到图片列表总数

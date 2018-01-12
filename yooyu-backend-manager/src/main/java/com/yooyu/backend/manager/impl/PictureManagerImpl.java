@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +38,8 @@ public class PictureManagerImpl implements PictureManager {
 		pictureUploadDTO.setFileId(generatekey(pictureUploadDTO.getFileName()));
 
 		final File file = pictureService.uploadPicToDisk(pictureUploadDTO);
-		pictureService.savePic(pictureUploadDTO.getFileId(),file.getPath());
-		
+		pictureService.savePic(pictureUploadDTO.getFileId(), file.getPath());
+
 		PictureUploadResultDTO pictureUploadResultDTO = PictureUploadResultDTO.builder()
 				.setFileId(pictureUploadDTO.getFileId());
 
@@ -55,8 +56,8 @@ public class PictureManagerImpl implements PictureManager {
 			pictureUploadDTO.setFileId(generatekey(pictureUploadDTO.getFileName()));
 
 			final File file = pictureService.uploadPicToDisk(pictureUploadDTO);
-			pictureService.savePic(pictureUploadDTO.getFileId(),file.getPath());
-			
+			pictureService.savePic(pictureUploadDTO.getFileId(), file.getPath());
+
 			PictureUploadResultDTO pictureUploadResultDTO = PictureUploadResultDTO.builder()
 					.setFileId(pictureUploadDTO.getFileId());
 
@@ -77,11 +78,10 @@ public class PictureManagerImpl implements PictureManager {
 		if (dbCount == cachedCount) {
 			datas = pictureCacheService.getPicListByCondition(pictureSearchDTO);
 		} else {
-			datas = pictureService.getPicListByCondition(pictureSearchDTO);
+			datas = pictureService.getPicListByCondition(pictureSearchDTO, false);
 
 			// 同步到缓存Redis里
-			List<PictureSearchResultDTO> list = pictureService.getPicListByCondition(initPictureSearchDTO());
-			pictureCacheService.savePicList(list);
+			this.syncRedis();
 		}
 
 		return datas;
@@ -118,5 +118,11 @@ public class PictureManagerImpl implements PictureManager {
 		pictureSearchDTO.setInputPage(InputPageParamDTO.builder());
 		pictureSearchDTO.setPicture(pictureSearchConditionDTO);
 		return pictureSearchDTO;
+	}
+
+	@Async("threadPoolExecuter")
+	private void syncRedis() {
+		List<PictureSearchResultDTO> list = pictureService.getPicListByCondition(initPictureSearchDTO(), true);
+		pictureCacheService.savePicList(list);
 	}
 }

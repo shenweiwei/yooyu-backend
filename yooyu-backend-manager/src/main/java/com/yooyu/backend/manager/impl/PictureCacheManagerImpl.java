@@ -15,11 +15,11 @@ import com.yooyu.backend.service.PictureCacheService;
 import com.yooyu.backend.service.PictureService;
 
 @Component
-public class PictureCacheManagerImpl implements PictureCacheManager{
-	
+public class PictureCacheManagerImpl implements PictureCacheManager {
+
 	@Autowired
 	private PictureCacheService pictureCacheService;
-	
+
 	@Autowired
 	private PictureService pictureService;
 
@@ -35,13 +35,13 @@ public class PictureCacheManagerImpl implements PictureCacheManager{
 
 	@Override
 	public int syncPicList() {
-		List<PictureSearchResultDTO> list = pictureService.getPicListByCondition(initPictureSearchDTO());
+		List<PictureSearchResultDTO> list = pictureService.getPicListByCondition(initPictureSearchDTO(), true);
 		int count = pictureCacheService.savePicList(list);
 		return count;
 	}
 
 	private PictureSearchDTO initPictureSearchDTO() {
-		PictureSearchConditionDTO pictureSearchConditionDTO=new PictureSearchConditionDTO();
+		PictureSearchConditionDTO pictureSearchConditionDTO = new PictureSearchConditionDTO();
 		pictureSearchConditionDTO.setAppId(AppConstant.APP_ID);
 		PictureSearchDTO pictureSearchDTO = PictureSearchDTO.builder();
 		pictureSearchDTO.setInputPage(InputPageParamDTO.builder());

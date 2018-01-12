@@ -86,7 +86,7 @@ public class PictureServiceImpl implements PictureService {
 	}
 
 	@Override
-	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO) {
+	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO, boolean ischeck) {
 		List<Picture> list = pictureMapper.findAll(pictureSearchDTO.getPicture(),
 				PageUtil.getPage(pictureSearchDTO.getInputPage()));
 		List<PictureSearchResultDTO> imageList = new ArrayList<>();
@@ -107,7 +107,7 @@ public class PictureServiceImpl implements PictureService {
 
 	@Override
 	public boolean deletePicByFileId(String key) {
-		int count 	= pictureMapper.delete(key);
+		int count = pictureMapper.delete(key);
 
 		if (count <= 0)
 			throw new BizException("insert picture error");
