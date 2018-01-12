@@ -1,5 +1,7 @@
 package com.yooyu.backend.service.impl;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -188,13 +190,18 @@ public class PictureServiceImpl implements PictureService {
 	 * @param filePath
 	 * @param fileId
 	 */
+	@Async("threadPoolExecuter")
 	private void checkLocationDiskFile(Picture picture) {
 		logger.info(picture.getDiskLocation());
+		System.out.println(picture.getDiskLocation());
 		File file = FileUtils.getFile(picture.getDiskLocation());
 		logger.info(file.exists());
+		System.out.println(picture.getDiskLocation());
 		if (!file.exists() && !file.isDirectory()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
 			try {
+				logger.info(file);
+				System.out.println(file);
 				FileUtils.writeByteArrayToFile(file, response.asByteArray());
 			} catch (IOException e) {
 				throw new AppException("byte array to file error", e);
