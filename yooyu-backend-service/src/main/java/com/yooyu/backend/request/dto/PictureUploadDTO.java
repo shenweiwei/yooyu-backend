@@ -9,20 +9,12 @@ import java.io.InputStream;
  *
  */
 public class PictureUploadDTO {
-	private String data;
 	private String fileName;
 	private String fileId;
 	private String fileType;
 	private InputStream inputStream;
 	private long contentLength;
 	
-	public String getData() {
-		return data;
-	}
-	public PictureUploadDTO setData(String data) {
-		this.data = data;
-		return this;
-	}
 	public String getFileName() {
 		return fileName;
 	}

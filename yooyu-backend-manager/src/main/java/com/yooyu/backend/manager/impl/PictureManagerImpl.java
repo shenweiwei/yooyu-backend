@@ -85,6 +85,7 @@ public class PictureManagerImpl implements PictureManager {
 		} else {
 			datas = pictureService.getPicListByCondition(pictureSearchDTO);
 
+			// 同步到缓存Redis里
 			List<PictureSearchResultDTO> list = pictureService.getPicListByCondition(initPictureSearchDTO());
 			pictureCacheService.savePicList(list);
 		}

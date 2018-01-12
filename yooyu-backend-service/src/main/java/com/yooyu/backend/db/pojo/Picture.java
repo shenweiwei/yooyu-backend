@@ -8,7 +8,8 @@ public class Picture {
 	private String appId;
 	private String eTag;
 	private String versionId;
-	private String data;
+	private String url;
+	private String diskLoaction;
 	private short valid;
 	private String remark;
 	private long userId;
@@ -101,16 +102,20 @@ public class Picture {
 		this.updateBy = updateBy;
 		return this;
 	}
-
-	public String getData() {
-		return data;
+	public String getUrl() {
+		return url;
 	}
-	
-	public Picture setData(String data) {
-		this.data = data;
+	public Picture setUrl(String url) {
+		this.url = url;
 		return this;
 	}
-	
+	public String getDiskLoaction() {
+		return diskLoaction;
+	}
+	public Picture setDiskLoaction(String diskLoaction) {
+		this.diskLoaction = diskLoaction;
+		return this;
+	}
 	public static Picture builder(){
 		return new Picture();
 	}

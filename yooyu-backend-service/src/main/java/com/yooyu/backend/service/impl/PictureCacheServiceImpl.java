@@ -40,7 +40,7 @@ public class PictureCacheServiceImpl implements PictureCacheService {
 		PictureSearchResultDTO pictureSearchResultDTO = valueOperations.get(key);
 		if (pictureSearchResultDTO == null)
 			throw new BizException("get picture is not exist");
-		pictureSearchResultDTO.setData(pictureSearchResultDTO.getData().replaceAll(System.lineSeparator(), ""));
+		
 		return pictureSearchResultDTO;
 	}
 

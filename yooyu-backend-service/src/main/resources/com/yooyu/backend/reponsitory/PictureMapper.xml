@@ -12,6 +12,8 @@
 		<result property="valid" column="VALID"/>
 		<result property="remark" column="REMARK"/>
 		<result property="userId" column="USER_ID"/>
+		<result property="url" column="URL"/>
+		<result property="diskLoaction" column="DISK_LOCATION"/>
 		<result property="createDate" column="CREATE_DATE"/>
 		<result property="createBy" column="CREATE_BY"/>
 		<result property="updateDate" column="UPDATE_DATE"/>

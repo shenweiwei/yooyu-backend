@@ -1,7 +1,9 @@
 package com.yooyu.backend.service.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 import com.yooyu.backend.client.bucket.PictureBucket;
 import com.yooyu.backend.common.exception.AppException;
 import com.yooyu.backend.common.exception.BizException;
-import com.yooyu.backend.common.utils.Base64Util;
 import com.yooyu.backend.common.utils.BeanUtil;
 import com.yooyu.backend.common.utils.PageUtil;
 import com.yooyu.backend.db.pojo.Picture;
@@ -46,17 +47,16 @@ public class PictureServiceImpl implements PictureService {
 
 	@Value("${app.pic-disk-location}")
 	private String pic_disk_location;
-	
+
 	@Value("${app.pic-disk-url-location}")
 	private String pic_disk_url_location;
-	
+
 	private static Logger logger = LogManager.getLogger(PictureServiceImpl.class);
 
-
 	@Override
-	public boolean savePic(String key,String filePath) {
+	public boolean savePic(String key, String filePath) {
 		// 初始化图片对象
-		Picture picture = initPicture(key,filePath);
+		Picture picture = initPicture(key, filePath);
 
 		int count = pictureMapper.upload(picture);
 
@@ -68,14 +68,7 @@ public class PictureServiceImpl implements PictureService {
 	@Override
 	@Async("threadPoolExecuter")
 	public PutObjectResponse uploadPicToAwsS3(PictureUploadDTO pictureUploadDTO, File file) {
-		RequestBody requestBody;
-
-		if (pictureUploadDTO.getData() != null && !"".equals(pictureUploadDTO.getData().trim())) {
-			byte[] bytes = Base64Util.GenerateBytes(pictureUploadDTO.getData());
-			requestBody = RequestBody.of(bytes);
-		} else {
-			requestBody = RequestBody.of(file);
-		}
+		RequestBody requestBody = RequestBody.of(file);
 
 		PutObjectResponse response = pictureBucket.putObject(pictureUploadDTO.getFileId(), requestBody);
 		if (response == null)
@@ -105,10 +98,9 @@ public class PictureServiceImpl implements PictureService {
 		List<PictureSearchResultDTO> imageList = new ArrayList<>();
 
 		list.forEach(picture -> {
-			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
-			String image = Base64Util.GenerateBase64(response.asByteArray());
-			PictureSearchResultDTO pictureSearchResultDTO = BeanUtil.map(picture, PictureSearchResultDTO.class)
-					.setData(image);
+			this.checkLocationDiskFile(picture);
+
+			PictureSearchResultDTO pictureSearchResultDTO = BeanUtil.map(picture, PictureSearchResultDTO.class);
 			imageList.add(pictureSearchResultDTO);
 		});
 
@@ -151,22 +143,30 @@ public class PictureServiceImpl implements PictureService {
 		return count;
 	}
 
-	private Picture initPicture(String key,String filePath) {
+	private Picture initPicture(String key, String filePath) {
 		String[] paths = filePath.split("\\\\");
-		String fileName = paths[paths.length-1];
-		String childPath = paths[paths.length-2];
+		String fileName = paths[paths.length - 1];
+		String childPath = paths[paths.length - 2];
 		StringBuffer fullPath = new StringBuffer(pic_disk_url_location).append(childPath).append("/").append(fileName);
 		logger.info(fullPath.toString());
-		
-		Picture picture = Picture.builder()
-				.setAppId(app_id)
-				.setFileId(key)
-				.setData(fullPath.toString());
+
+		Picture picture = Picture.builder().setAppId(app_id).setFileId(key).setUrl(filePath)
+				.setDiskLoaction(fullPath.toString());
 		return picture;
+	}
+
+	@Override
+	public boolean updatePicByFileId(PictureUploadDTO pictureUploadDTO, PutObjectResponse response) {
+		Picture picture = Picture.builder().setFileId(pictureUploadDTO.getFileId()).seteTag(response.eTag())
+				.setVersionId(response.versionId()).setRemark("synced");
+		int count = pictureMapper.update(picture);
+
+		return count <= 0 ? false : true;
 	}
 
 	/**
 	 * 创建当前日期的目录（精确到天）
+	 * 
 	 * @return file path
 	 */
 	private String createNowDayDir() {
@@ -180,16 +180,26 @@ public class PictureServiceImpl implements PictureService {
 		} catch (IOException e) {
 			throw new AppException("mkdir error");
 		}
-		
+
 		return path;
 	}
 
-	@Override
-	public boolean updatePicByFileId(PictureUploadDTO pictureUploadDTO, PutObjectResponse response) {
-		Picture picture = Picture.builder().setFileId(pictureUploadDTO.getFileId()).seteTag(response.eTag())
-				.setVersionId(response.versionId()).setRemark("synced");
-		int count = pictureMapper.update(picture);
-
-		return count <= 0 ? false : true;
+	/**
+	 * 验证文件是否在本地
+	 * 
+	 * @param filePath
+	 * @param fileId
+	 */
+	private void checkLocationDiskFile(Picture picture) {
+		File file = FileUtils.getFile(picture.getDiskLoaction());
+		if (!file.exists()) {
+			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getUrl());
+			InputStream inputStream = new ByteArrayInputStream(response.asByteArray()); 
+			try {
+				FileUtils.copyInputStreamToFile(inputStream, file);
+			} catch (IOException e) {
+				throw new AppException("cast inputstream to file error");
+			}
+		}
 	}
 }
