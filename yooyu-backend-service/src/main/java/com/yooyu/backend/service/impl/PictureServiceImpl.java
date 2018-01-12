@@ -198,7 +198,7 @@ public class PictureServiceImpl implements PictureService {
 			try {
 				FileUtils.writeByteArrayToFile(file, response.asByteArray());
 			} catch (IOException e) {
-				throw new AppException("byte array to file error");
+				throw new AppException("byte array to file error" , e);
 			}
 		}
 	}
