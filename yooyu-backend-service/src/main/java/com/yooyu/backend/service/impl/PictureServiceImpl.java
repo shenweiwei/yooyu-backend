@@ -148,8 +148,8 @@ public class PictureServiceImpl implements PictureService {
 		StringBuffer fullPath = new StringBuffer(pic_disk_url_location).append(childPath).append("/").append(fileName);
 		logger.info(fullPath.toString());
 
-		Picture picture = Picture.builder().setAppId(app_id).setFileId(key).setUrl(filePath)
-				.setDiskLoaction(fullPath.toString());
+		Picture picture = Picture.builder().setAppId(app_id).setFileId(key).setUrl(fullPath.toString())
+				.setDiskLoaction(filePath);
 		return picture;
 	}
 
