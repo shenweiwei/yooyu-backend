@@ -189,8 +189,8 @@ public class PictureServiceImpl implements PictureService {
 	 * @param fileId
 	 */
 	private void checkLocationDiskFile(Picture picture) {
-		logger.info(picture.getDiskLoaction().replaceAll("\\", "/"));
-		File file = FileUtils.getFile(picture.getDiskLoaction().replaceAll("\\", "/"));
+		logger.info(picture.getDiskLoaction());
+		File file = FileUtils.getFile(picture.getDiskLoaction());
 		logger.info(file.exists());
 		if (!file.exists() && !file.isDirectory()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
