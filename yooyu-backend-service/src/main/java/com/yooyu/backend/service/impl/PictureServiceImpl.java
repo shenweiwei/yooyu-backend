@@ -2,6 +2,7 @@ package com.yooyu.backend.service.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -194,11 +195,10 @@ public class PictureServiceImpl implements PictureService {
 		File file = FileUtils.getFile(picture.getDiskLoaction());
 		if (!file.exists()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
-			InputStream inputStream = new ByteArrayInputStream(response.asByteArray()); 
 			try {
-				FileUtils.copyInputStreamToFile(inputStream, file);
+				FileUtils.writeByteArrayToFile(file, response.asByteArray());
 			} catch (IOException e) {
-				throw new AppException("cast inputstream to file error");
+				throw new AppException("byte array to file error");
 			}
 		}
 	}
