@@ -1,10 +1,7 @@
 package com.yooyu.backend.service.impl;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -192,9 +189,9 @@ public class PictureServiceImpl implements PictureService {
 	 * @param fileId
 	 */
 	private void checkLocationDiskFile(Picture picture) {
-		File file = FileUtils.getFile(picture.getDiskLoaction());
+		File file = FileUtils.getFile(picture.getDiskLoaction().replaceAll("\\", "\\\\"));
 		logger.info(file.exists());
-		if (!file.exists()) {
+		if (!file.exists()&& !file .isDirectory()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
 			try {
 				FileUtils.writeByteArrayToFile(file, response.asByteArray());
