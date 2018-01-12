@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -47,6 +49,9 @@ public class PictureServiceImpl implements PictureService {
 	
 	@Value("${app.pic-disk-url-location}")
 	private String pic_disk_url_location;
+	
+	private static Logger logger = LogManager.getLogger(PictureServiceImpl.class);
+
 
 	@Override
 	public boolean savePic(String key,String filePath) {
@@ -147,11 +152,13 @@ public class PictureServiceImpl implements PictureService {
 	}
 
 	private Picture initPicture(String key,String filePath) {
+		logger.info(filePath);
 		String[] paths = filePath.split("/");
+		logger.info(paths.length);
 		String fileName = paths[paths.length-1];
 		String childPath = paths[paths.length-2];
 		StringBuffer fullPath = new StringBuffer(pic_disk_url_location).append(childPath).append(fileName);
-		System.out.println(fullPath.toString());
+		logger.info(fullPath.toString());
 		
 		Picture picture = Picture.builder()
 				.setAppId(app_id)
