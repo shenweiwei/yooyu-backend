@@ -190,6 +190,7 @@ public class PictureServiceImpl implements PictureService {
 	 */
 	@Async("threadPoolExecuter")
 	private void checkLocationDiskFile(Picture picture) {
+		logger.info(picture.getDiskLocation());
 		File file = FileUtils.getFile(picture.getDiskLocation());
 		logger.info(file.exists());
 		if (!file.exists() && !file.isDirectory()) {
