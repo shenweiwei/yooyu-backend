@@ -11,7 +11,8 @@ public class PictureSearchResultVO {
 	private Short valid;
 	private String remark;
 	private Long userId;
-	private String data;
+	private String url;
+	private String diskLocation;
 	private Date createDate;
 	private Long createBy;
 	private Date updateDate;
@@ -101,13 +102,20 @@ public class PictureSearchResultVO {
 		this.updateBy = updateBy;
 		return this;
 	}
-	public String getData() {
-		return data;
+	public String getUrl() {
+		return url;
 	}
-	public PictureSearchResultVO setData(String data) {
-		this.data = data;
+	public PictureSearchResultVO setUrl(String url) {
+		this.url = url;
 		return this;
-	}	
+	}
+	public String getDiskLocation() {
+		return diskLocation;
+	}
+	public PictureSearchResultVO setDiskLocation(String diskLocation) {
+		this.diskLocation = diskLocation;
+		return this;
+	}
 	public static PictureSearchResultVO builder(){
 		return new PictureSearchResultVO();
 	}
