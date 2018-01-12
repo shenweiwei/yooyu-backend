@@ -6,12 +6,15 @@ public class PictureHistory {
 	private long id;
 	private String fileId;
 	private String appId;
-	private String data;
+	private String url;
+	private String diskLocation;
 	private long userId;
 	private long pictureId;
 	private String remark;
 	private Date createDate;
 	private long createBy;
+	private String eTag;
+	private String versionId;
 	
 	public long getId() {
 		return id;
@@ -30,12 +33,6 @@ public class PictureHistory {
 	}
 	public void setAppId(String appId) {
 		this.appId = appId;
-	}
-	public String getData() {
-		return data;
-	}
-	public void setData(String data) {
-		this.data = data;
 	}
 	public long getUserId() {
 		return userId;
@@ -66,5 +63,29 @@ public class PictureHistory {
 	}
 	public void setCreateBy(long createBy) {
 		this.createBy = createBy;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getDiskLocation() {
+		return diskLocation;
+	}
+	public void setDiskLocation(String diskLocation) {
+		this.diskLocation = diskLocation;
+	}
+	public String geteTag() {
+		return eTag;
+	}
+	public void seteTag(String eTag) {
+		this.eTag = eTag;
+	}
+	public String getVersionId() {
+		return versionId;
+	}
+	public void setVersionId(String versionId) {
+		this.versionId = versionId;
 	}
 }

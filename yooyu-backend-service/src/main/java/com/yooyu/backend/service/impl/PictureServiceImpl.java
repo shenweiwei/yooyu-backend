@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -48,8 +46,6 @@ public class PictureServiceImpl implements PictureService {
 
 	@Value("${app.pic-disk-url-location}")
 	private String pic_disk_url_location;
-
-	private static Logger logger = LogManager.getLogger(PictureServiceImpl.class);
 
 	@Override
 	public boolean savePic(String key, String filePath) {
@@ -111,7 +107,7 @@ public class PictureServiceImpl implements PictureService {
 
 	@Override
 	public boolean deletePicByFileId(String key) {
-		int count = pictureMapper.delete(key);
+		int count 	= pictureMapper.delete(key);
 
 		if (count <= 0)
 			throw new BizException("insert picture error");
@@ -146,7 +142,6 @@ public class PictureServiceImpl implements PictureService {
 		String fileName = paths[paths.length - 1];
 		String childPath = paths[paths.length - 2];
 		StringBuffer fullPath = new StringBuffer(pic_disk_url_location).append(childPath).append("/").append(fileName);
-		logger.info(fullPath.toString());
 
 		Picture picture = Picture.builder().setAppId(app_id).setFileId(key).setUrl(fullPath.toString())
 				.setDiskLocation(filePath);
@@ -190,16 +185,10 @@ public class PictureServiceImpl implements PictureService {
 	 */
 	@Async("threadPoolExecuter")
 	private void checkLocationDiskFile(Picture picture) {
-		logger.info(picture.getDiskLocation());
-		System.out.println(picture.getDiskLocation());
 		File file = FileUtils.getFile(picture.getDiskLocation());
-		logger.info(file.exists());
-		System.out.println(picture.getDiskLocation());
 		if (!file.exists() && !file.isDirectory()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
 			try {
-				logger.info(file);
-				System.out.println(file);
 				FileUtils.writeByteArrayToFile(file, response.asByteArray());
 			} catch (IOException e) {
 				throw new AppException("byte array to file error", e);
