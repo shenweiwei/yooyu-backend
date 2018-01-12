@@ -7,7 +7,10 @@
 		<id property="id" column="ID" />
 		<result property="fileId" column="FILE_ID"/>
 		<result property="appId" column="APP_ID"/>
-		<result property="data" column="DATA"/>
+		<result property="url" column="URL"/>
+		<result property="diskLocation" column="DISK_LOCATION"/>
+		<result property="eTag" column="E_TAG"/>
+		<result property="versionId" column="VERSION_ID"/>
 		<result property="pictureId" column="PICTURE_ID"/>
 		<result property="userId" column="USER_ID"/>
 		<result property="remark" column="REMARK"/>
@@ -18,7 +21,7 @@
 	<insert id="save" parameterType="com.yooyu.backend.db.pojo.PictureHistory">
 		INSERT INTO
 		"PICTURE_HISTORY"("ID","FILE_ID","APP_ID","URL","DISK_LOCATION","E_TAG","VERSION_ID","VALID","REMARK","USER_ID","CREATE_DATE","CREATE_BY")
-		VALUES(NEXTVAL('"PICTURE_HISTORY_ID_SEQ"'),#{fileId},#{appId},#{url},#{diskLoaction},#{eTag,jdbcType=VARCHAR},#{versionId,jdbcType=VARCHAR},1,null,null,now(),-1)
+		VALUES(NEXTVAL('"PICTURE_HISTORY_ID_SEQ"'),#{fileId},#{appId},#{url},#{diskLocation},#{eTag,jdbcType=VARCHAR},#{versionId,jdbcType=VARCHAR},1,null,null,now(),-1)
 	</insert>
 	
 <!-- 	<update id="delete" parameterType="java.lang.String"> -->
