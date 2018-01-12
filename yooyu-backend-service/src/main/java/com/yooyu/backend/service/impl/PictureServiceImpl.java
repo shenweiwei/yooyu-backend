@@ -189,14 +189,15 @@ public class PictureServiceImpl implements PictureService {
 	 * @param fileId
 	 */
 	private void checkLocationDiskFile(Picture picture) {
-		File file = FileUtils.getFile(picture.getDiskLoaction().replaceAll("\\", "\\\\"));
+		logger.info(picture.getDiskLoaction().replaceAll("\\", "/"));
+		File file = FileUtils.getFile(picture.getDiskLoaction().replaceAll("\\", "/"));
 		logger.info(file.exists());
-		if (!file.exists()&& !file .isDirectory()) {
+		if (!file.exists() && !file.isDirectory()) {
 			ResponseBytes<GetObjectResponse> response = pictureBucket.getObject(picture.getFileId());
 			try {
 				FileUtils.writeByteArrayToFile(file, response.asByteArray());
 			} catch (IOException e) {
-				throw new AppException("byte array to file error" , e);
+				throw new AppException("byte array to file error", e);
 			}
 		}
 	}
