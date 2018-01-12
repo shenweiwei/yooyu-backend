@@ -20,8 +20,8 @@
 	
 	<insert id="save" parameterType="com.yooyu.backend.db.pojo.PictureHistory">
 		INSERT INTO
-		"PICTURE_HISTORY"("ID","FILE_ID","APP_ID","URL","DISK_LOCATION","E_TAG","VERSION_ID","VALID","REMARK","USER_ID","CREATE_DATE","CREATE_BY")
-		VALUES(NEXTVAL('"PICTURE_HISTORY_ID_SEQ"'),#{fileId},#{appId},#{url},#{diskLocation},#{eTag,jdbcType=VARCHAR},#{versionId,jdbcType=VARCHAR},1,null,null,now(),-1)
+		"PICTURE_HISTORY"("ID","FILE_ID","APP_ID","URL","DISK_LOCATION","E_TAG","VERSION_ID","REMARK","USER_ID","CREATE_DATE","CREATE_BY")
+		VALUES (NEXTVAL('"PICTURE_HISTORY_ID_SEQ"'),#{fileId},#{appId},#{url},#{diskLocation},#{eTag,jdbcType=VARCHAR},#{versionId,jdbcType=VARCHAR},null,null,now(),-1)
 	</insert>
 	
 <!-- 	<update id="delete" parameterType="java.lang.String"> -->
