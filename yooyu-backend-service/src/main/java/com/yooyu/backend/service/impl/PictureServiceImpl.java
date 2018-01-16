@@ -31,7 +31,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 @Service
-public class PictureServiceImpl implements PictureService {
+public class PictureServiceImpl extends BaseService implements PictureService {
 	@Autowired
 	private PictureMapper pictureMapper;
 

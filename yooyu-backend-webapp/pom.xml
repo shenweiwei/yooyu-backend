@@ -36,6 +36,10 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>  
+		    <groupId>org.springframework.session</groupId>  
+		    <artifactId>spring-session-data-redis</artifactId>  
+		</dependency>  
 		<dependency>
 			<groupId>com.aws.codestar.yooyu</groupId>
 			<artifactId>yooyu-backend-common</artifactId>

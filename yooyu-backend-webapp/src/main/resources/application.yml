@@ -24,7 +24,7 @@ spring:
 logging:
   config: classpath:log4j2.xml
 
-#AWS
+# AWS
 aws:
   account:
     accessKeyId: AKIAIAUESC2O43NSEWJQ
@@ -39,5 +39,7 @@ app:
   id: yooyu-webapp
   pic-disk-location: D:/disk-pic/
   pic-disk-url-location: http://yooyu-family.cn:8888/static/images/
+  pic-redis: 0
+  session-redis: 1
 
 

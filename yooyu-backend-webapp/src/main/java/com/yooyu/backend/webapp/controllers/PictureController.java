@@ -34,7 +34,7 @@ import com.yooyu.backend.webapp.response.vo.PictureSearchResultVO;
 
 @RestController
 @Path("/picture")
-public class PictureController {
+public class PictureController extends BaseController{
 
 	@Autowired
 	private PictureManager pictureManager;
@@ -64,9 +64,9 @@ public class PictureController {
 	@Produces({ "application/json;charset=utf-8", MediaType.TEXT_PLAIN })
 	public PageInfo<PictureSearchResultVO> getPicList(PictureSearchVO pictureSearchVO) throws AppException {
 		PictureSearchDTO pictureSearchDTO = packagePictureSearchDTO(pictureSearchVO);
-
+		
 		List<PictureSearchResultDTO> datas = pictureManager.getPicListByCondition(pictureSearchDTO);
-
+		
 		return packagePageInfo(datas);
 	}
 

@@ -18,7 +18,7 @@ import com.yooyu.backend.response.dto.PictureSearchResultDTO;
 import com.yooyu.backend.service.PictureCacheService;
 
 @Service
-public class PictureCacheServiceImpl implements PictureCacheService {
+public class PictureCacheServiceImpl extends BaseService implements PictureCacheService {
 
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
@@ -28,26 +28,32 @@ public class PictureCacheServiceImpl implements PictureCacheService {
 
 	@Override
 	public List<PictureSearchResultDTO> getPicListByCondition(PictureSearchDTO pictureSearchDTO) {
+		super.changePictureRedisDB();
 		Set<String> keys = redisTemplate.keys("*");
 
 		List<PictureSearchResultDTO> pictureSearchResultDTOList = setResultList(pictureSearchDTO.getInputPage(), keys);
 
+		super.changeSessionRedisDB();
 		return pictureSearchResultDTOList;
 	}
 
 	@Override
 	public PictureSearchResultDTO getPicByFileId(String key) {
+		super.changePictureRedisDB();
 		PictureSearchResultDTO pictureSearchResultDTO = valueOperations.get(key);
 		if (pictureSearchResultDTO == null)
 			throw new BizException("get picture is not exist");
 		
+		super.changeSessionRedisDB();
 		return pictureSearchResultDTO;
 	}
 
 	@Override
 	public int savePicList(List<PictureSearchResultDTO> list) {
 		int count = 0;
-
+		
+		super.changePictureRedisDB();
+		
 		list.forEach(pictureSearchResultDTO -> {
 			boolean exists = redisTemplate.hasKey(pictureSearchResultDTO.getFileId());
 			
@@ -56,6 +62,7 @@ public class PictureCacheServiceImpl implements PictureCacheService {
 			}
 		});
 
+		super.changeSessionRedisDB();
 		return count;
 	}
 
@@ -81,7 +88,9 @@ public class PictureCacheServiceImpl implements PictureCacheService {
 
 	@Override
 	public int getPicListByConditionCount(PictureSearchDTO pictureSearchDTO) {
+		super.changePictureRedisDB();
 		Set<String> keys = redisTemplate.keys("*");
+		super.changeSessionRedisDB();
 		return keys.size();
 	}
 }
