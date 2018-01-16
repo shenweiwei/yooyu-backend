@@ -18,8 +18,8 @@ public abstract class BaseService {
 	@Resource(name = "redisTemplate")
 	private ValueOperations<String , Object> valueOperations;
 	
-	@Value("${app.seesion-redis}")
-	private int sesssionRedis;
+	@Value("${app.session-redis}")
+	private int sessionRedis;
 	
 	@Value("${app.pic-redis}")
 	private int pictureRedis;
@@ -30,7 +30,7 @@ public abstract class BaseService {
 	}
 	
 	public void changeSessionRedisDB(){
-		JedisConnectionFactory connectionFactory = RedisUtil.getConnectionFactory(sesssionRedis);
+		JedisConnectionFactory connectionFactory = RedisUtil.getConnectionFactory(sessionRedis);
 		redisTemplate.setConnectionFactory(connectionFactory);
 	}
 }
